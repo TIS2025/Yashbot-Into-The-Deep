@@ -48,17 +48,17 @@ public class FinalSeq {
 
     public static Action SampleDropPos(Arm arm, Slider slider){
         return new SequentialAction(
-                new ParallelAction(
-                        new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
-                        new SleepAction(0.3),
-                        new InstantAction(()-> slider.updateTurretState(Slider.TurretState.UP)),
-                        new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
-                        new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP))
-                ),
+                new InstantAction(()-> arm.updateYawState(Arm.YawState.NEUTRAL)),
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
+                new SleepAction(0.3),
+                new InstantAction(()-> slider.updateTurretState(Slider.TurretState.UP)),
+                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP)),
                 new SleepAction(1),
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.BUCKET_DROP))
         );
     }
+
 
     public static Action SampleDrop(Arm arm, Slider slider){
         return new SequentialAction(
@@ -72,4 +72,5 @@ public class FinalSeq {
                 HomePos(arm,slider)
         );
     }
+
 }

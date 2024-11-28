@@ -25,6 +25,8 @@ import java.util.List;
 @TeleOp(name = "Sequence Test")
 public class TestSequences extends LinearOpMode {
     static List<Action> ftc = new ArrayList<>();
+
+    int specimenState = 0;
     @Override
     public void runOpMode() throws InterruptedException {
         RobotHardware robot = new RobotHardware(hardwareMap);
@@ -57,10 +59,10 @@ public class TestSequences extends LinearOpMode {
             robot.drive.setDrivePowers(
                     new PoseVelocity2d(
                             new Vector2d(
-                                    -gamepad1.left_stick_y*0.6,
-                                    -gamepad1.left_stick_x*0.6
+                                    -gamepad1.left_stick_y,
+                                    -gamepad1.left_stick_x
                             ),
-                            -gamepad1.right_stick_x*0.6
+                            -gamepad1.right_stick_x*0.5
                     )
             );
             ftc = updateAction();
@@ -82,11 +84,12 @@ public class TestSequences extends LinearOpMode {
 //                );
                 ftc.add(FinalSeq.SamplePick(arm,slider));
             }
-            if(gamepad1.y){
+            if(C1.y && !P1.y && specimenState == 0){
                 ftc.add(IntakeSeq.PreSpecimenIntake(arm,slider));
+                specimenState = 1;
             }
 
-            if(distance<10 && arm.elbowState == Arm.ElbowState.SPECIMEN_PRE_INTAKE){
+            if(C1.y && !P1.y && specimenState == 1){
                 ftc.add(
                         new SequentialAction(
                                 IntakeSeq.SpecimenIntake(arm),
@@ -94,6 +97,7 @@ public class TestSequences extends LinearOpMode {
                                 IntakeSeq.SpecimenPreDrop(arm,slider)
                         )
                 );
+                specimenState = 2;
             }
             if(gamepad1.dpad_up){
 //                ftc.add(BucketSeq.PreDrop(slider,arm));
@@ -103,11 +107,12 @@ public class TestSequences extends LinearOpMode {
 //                ftc.add(BucketSeq.Drop(slider,arm));
                 ftc.add(FinalSeq.SampleDrop(arm,slider));
             }
-            if(gamepad1.dpad_left){
+            if(C1.y && !P1.y && specimenState == 2){
                 ftc.add(IntakeSeq.SpecimenDrop(arm,slider));
+                specimenState = 0;
             }
-            if(C1.left_bumper && !P1.left_bumper) slider.setExt(robot.extLeft.getCurrentPosition()+100);
-            if(C1.right_bumper && !P1.right_bumper) slider.setExt(robot.extLeft.getCurrentPosition()-100);
+            if(C2.left_bumper && !P2.left_bumper) slider.setExt(robot.extLeft.getCurrentPosition()+100);
+            if(C2.right_bumper && !P2.right_bumper) slider.setExt(robot.extLeft.getCurrentPosition()-100);
 
             if(C2.a && !P2.a){
                 wrist_rotate = !wrist_rotate;
@@ -118,8 +123,8 @@ public class TestSequences extends LinearOpMode {
             if(C2.dpad_up && !P2.dpad_up) hanger_pos+=50;
             if(C2.dpad_down && !P2.dpad_down) hanger_pos-=50;
 
-            if(C2.left_bumper) hanger.setHanger(1100);
-            if(C2.right_bumper) hanger.setHanger(400);
+//            if(C2.left_bumper) hanger.setHanger(1100);
+//            if(C2.right_bumper) hanger.setHanger(400);
 
 //            hanger.setHanger(Math.max(hanger_pos,0));
 
@@ -136,6 +141,7 @@ public class TestSequences extends LinearOpMode {
             telemetry.addData("Wrist",robot.wrist.getPosition());
             telemetry.addData("Gripper",robot.gripper.getPosition());
             telemetry.addData("Distance",distance);
+            telemetry.addData("intake_state",specimenState);
             telemetry.update();
         }
     }

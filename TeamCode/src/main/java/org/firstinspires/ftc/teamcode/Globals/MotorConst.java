@@ -5,9 +5,9 @@ import com.acmerobotics.dashboard.config.Config;
 @Config
 public class MotorConst {
     public static int extInit = 0;
-    public static int extMin = 100;
+    public static int extMin = 0;
     public static int extMax = 0;
-    public static int extMid = 0;
+    public static int extMid = 1200;
     public static int extHighBucketDrop = 2900;
     public static int extSpecimenPrePick = 0;
     public static int extSpecimenPreDrop = 550;

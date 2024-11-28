@@ -16,7 +16,8 @@ public class Arm {
         WRIST0,
         WRIST90,
         INIT,
-        WRIST180
+        WRIST180,
+        AUTO_FIRST_PICK
     }
     public enum ElbowState{
         INIT,
@@ -31,7 +32,8 @@ public class Arm {
         SPECIMEN_PRE_INTAKE,
         SPECIMEN_INTAKE,
         SPECIMEN_PRE_DROP,
-        SPECIMEN_DROP
+        SPECIMEN_DROP,
+        AUTO_INIT
     }
     public enum ShoulderState{
         INIT,
@@ -46,14 +48,20 @@ public class Arm {
         SPECIMEN_PRE_INTAKE,
         SPECIMEN_INTAKE,
         SPECIMEN_PRE_DROP,
-        SPECIMEN_DROP
+        SPECIMEN_DROP,
+        AUTO_INIT
     }
     public enum YawState{
         INIT,
         NEUTRAL,
         LEFT,
         RIGHT,
-        HOME
+        HOME,
+        AUTO_INIT,
+        AUTO_FIRST_PICK,
+        AUTO_SAMPLE_DROP_RIGHT,
+        AUTO_SAMPLE_DROP_LEFT
+
     }
 
     public GripperState gripperState = GripperState.INIT;
@@ -96,6 +104,10 @@ public class Arm {
             case WRIST180:
                 setWrist(ServoConst.wrist180);
                 wristState = WristState.WRIST180;
+                break;
+            case AUTO_FIRST_PICK:
+                setWrist(ServoConst.wristAutoFirstPick);
+                wristState = WristState.AUTO_FIRST_PICK;
                 break;
         }
     }
@@ -154,6 +166,10 @@ public class Arm {
                 setElbow(ServoConst.elbowSpecimenDrop);
                 elbowState = ElbowState.SPECIMEN_DROP;
                 break;
+            case AUTO_INIT:
+                setElbow(ServoConst.elbowAutoInit);
+                elbowState = ElbowState.AUTO_INIT;
+                break;
         }
     }
 
@@ -211,6 +227,10 @@ public class Arm {
                 setShoulder(ServoConst.shoulderSpecimenDrop);
                 elbowState = ElbowState.SPECIMEN_DROP;
                 break;
+            case AUTO_INIT:
+                setShoulder(ServoConst.shoulderAutoInit);
+                elbowState = ElbowState.AUTO_INIT;
+                break;
         }
     }
 
@@ -235,6 +255,22 @@ public class Arm {
             case HOME:
                 setYaw(ServoConst.yawHome);
                 yawState = YawState.HOME;
+                break;
+            case AUTO_INIT:
+                setYaw(ServoConst.yawAutoInit);
+                yawState = YawState.AUTO_INIT;
+                break;
+            case AUTO_FIRST_PICK:
+                setYaw(ServoConst.yawAutoFirstPick);
+                yawState = YawState.AUTO_FIRST_PICK;
+                break;
+            case AUTO_SAMPLE_DROP_RIGHT:
+                setYaw(ServoConst.yawAutoSampleDropRight);
+                yawState = YawState.AUTO_SAMPLE_DROP_RIGHT;
+                break;
+            case AUTO_SAMPLE_DROP_LEFT:
+                setYaw(ServoConst.yawAutoSampleDropLeft);
+                yawState = YawState.AUTO_SAMPLE_DROP_LEFT;
                 break;
         }
     }

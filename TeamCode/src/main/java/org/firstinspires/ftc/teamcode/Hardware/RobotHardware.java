@@ -32,7 +32,7 @@ public class RobotHardware {
     public RobotHardware(HardwareMap hardwareMap){
 
         //DRIVE init
-        this.drive = new MecanumDrive(hardwareMap,new Pose2d(new Vector2d(0,0),0));
+        this.drive = new MecanumDrive(hardwareMap,new Pose2d(new Vector2d(-40,-60),0));
 
         //SLIDER init
         this.extRight = hardwareMap.get(DcMotorEx.class,"extensionRight");

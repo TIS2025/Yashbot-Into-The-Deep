@@ -12,6 +12,7 @@ public class ServoConst {
     public static double wrist0 = 0;
     public static double wrist90 = 0.5;
     public static double wrist180 = 1;
+    public static double wristAutoFirstPick = 0.3;
 
     public static double elbowInit = 0.5;
     public static double elbowUp = 0.5;
@@ -26,6 +27,8 @@ public class ServoConst {
     public static double elbowSpecimenPick = 0.63;
     public static double elbowSpecimenPreDrop = 0.625;
     public static double elbowSpecimenDrop = 0.625;
+    public static double elbowAutoInit = 0.5;
+
 
     public static double shoulderInit = 0.5;
     public static double shoulderUp = 0.5;
@@ -40,10 +43,15 @@ public class ServoConst {
     public static double shoulderSpecimenPick = 1;
     public static double shoulderSpecimenPreDrop = 0.6;
     public static double shoulderSpecimenDrop = 0.6;
+    public static double shoulderAutoInit = 0.8;
 
     public static double yawInit = 0.5;
     public static double yawNeutral = 0.825;
     public static double yawLeft = 0.5;
     public static double yawRight = 0.5;
     public static double yawHome = 0.45;
+    public static double yawAutoInit = 0.825;
+    public static double yawAutoFirstPick = 0.675;
+    public static double yawAutoSampleDropRight = 0.78;
+    public static double yawAutoSampleDropLeft = 1.0;
 }
