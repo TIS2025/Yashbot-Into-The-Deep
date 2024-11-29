@@ -17,7 +17,8 @@ public class Arm {
         WRIST90,
         INIT,
         WRIST180,
-        AUTO_FIRST_PICK
+        AUTO_PICK_LEFT,
+        AUTO_PICK_RIGHT
     }
     public enum ElbowState{
         INIT,
@@ -58,9 +59,10 @@ public class Arm {
         RIGHT,
         HOME,
         AUTO_INIT,
-        AUTO_FIRST_PICK,
+        AUTO_PICK_RIGHT,
         AUTO_SAMPLE_DROP_RIGHT,
-        AUTO_SAMPLE_DROP_LEFT
+        AUTO_SAMPLE_DROP_LEFT,
+        AUTO_PICK_LEFT
 
     }
 
@@ -105,9 +107,13 @@ public class Arm {
                 setWrist(ServoConst.wrist180);
                 wristState = WristState.WRIST180;
                 break;
-            case AUTO_FIRST_PICK:
-                setWrist(ServoConst.wristAutoFirstPick);
-                wristState = WristState.AUTO_FIRST_PICK;
+            case AUTO_PICK_RIGHT:
+                setWrist(ServoConst.wristAutoPickRight);
+                wristState = WristState.AUTO_PICK_RIGHT;
+                break;
+            case AUTO_PICK_LEFT:
+                setWrist(ServoConst.wristAutoPickLeft);
+                wristState = WristState.AUTO_PICK_LEFT;
                 break;
         }
     }
@@ -260,9 +266,9 @@ public class Arm {
                 setYaw(ServoConst.yawAutoInit);
                 yawState = YawState.AUTO_INIT;
                 break;
-            case AUTO_FIRST_PICK:
-                setYaw(ServoConst.yawAutoFirstPick);
-                yawState = YawState.AUTO_FIRST_PICK;
+            case AUTO_PICK_RIGHT:
+                setYaw(ServoConst.yawAutoPickRight);
+                yawState = YawState.AUTO_PICK_RIGHT;
                 break;
             case AUTO_SAMPLE_DROP_RIGHT:
                 setYaw(ServoConst.yawAutoSampleDropRight);
@@ -271,6 +277,10 @@ public class Arm {
             case AUTO_SAMPLE_DROP_LEFT:
                 setYaw(ServoConst.yawAutoSampleDropLeft);
                 yawState = YawState.AUTO_SAMPLE_DROP_LEFT;
+                break;
+            case AUTO_PICK_LEFT:
+                setYaw(ServoConst.yawAutoPickLeft);
+                yawState = YawState.AUTO_PICK_LEFT;
                 break;
         }
     }

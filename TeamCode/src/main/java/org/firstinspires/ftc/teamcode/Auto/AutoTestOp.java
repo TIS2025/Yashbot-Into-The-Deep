@@ -34,7 +34,7 @@ public class AutoTestOp extends LinearOpMode {
                 .afterTime(1.5,AutoSeq.SamplePickPos(arm,slider))
                 .waitSeconds(0.7)
                 .strafeToLinearHeading(new Vector2d(11,-57),0)
-                .stopAndAdd(AutoSeq.SamplePickYaw(arm,slider))
+                .stopAndAdd(AutoSeq.SamplePickYawRight(arm,slider))
                 .afterTime(0.5,AutoSeq.SampleDropPos(arm,slider))
                 .strafeToLinearHeading(new Vector2d(-50,-55),0)
                 .stopAndAdd(AutoSeq.SampleDropYawRight(arm,slider))
@@ -45,12 +45,12 @@ public class AutoTestOp extends LinearOpMode {
                 ////////////////////// THIRD ELEMENT ///////////////////////
                 .afterTime(0.01,AutoSeq.SamplePick(arm,slider))
                 .waitSeconds(1)
-                .afterTime(0.01,AutoSeq.SampleDropPos(arm,slider))
+                .afterTime(0.5,AutoSeq.SampleDropPos(arm,slider))
                 .strafeToConstantHeading(new Vector2d(-57,-49))
-                .afterTime(0.9,AutoSeq.SampleDropYawLeft(arm,slider))
-                .waitSeconds(1)
+                .stopAndAdd(AutoSeq.SampleDropYawLeft(arm,slider))
+                .waitSeconds(0.5)
                 .afterTime(0.01,AutoSeq.HomePos(arm,slider))
-                .waitSeconds(1)
+                .waitSeconds(1.5)
                 .strafeToLinearHeading(new Vector2d(-57,-37),Math.PI/2 + Math.toRadians(4))
                 //////////////////////// FOURTH ELEMENT /////////////////////
                 .afterTime(0.01,AutoSeq.SamplePick(arm,slider))
@@ -61,14 +61,54 @@ public class AutoTestOp extends LinearOpMode {
                 .waitSeconds(5)
                 .build();
 
-//        Action test2 = robot.drive.actionBuilder(new Pose2d(new Vector2d(-40,-60),0))
-//                .strafeToLinearHeading(new Vector2d(-50,-55),0)
-//                .afterTime(0.01,AutoSeq.HomePos(arm,slider))
-//                .waitSeconds(1)
-//                .strafeToLinearHeading(new Vector2d(-42,-30),Math.PI/2 + Math.toRadians(4))
-//                .afterTime(1,AutoSeq.SamplePick(arm,slider))
-//                .waitSeconds(5)
-//                .build();
+        Action test2 = robot.drive.actionBuilder(new Pose2d(new Vector2d(-40,-60),0))
+                ///////////////////// FIRST SAMPLE ////////////////////////
+                .afterTime(0.01,AutoSeq.SampleDropPos(arm,slider))
+                .strafeToConstantHeading(new Vector2d(-50,-55))
+                .afterTime(0.9,AutoSeq.SampleDropYawRight(arm,slider))
+                .waitSeconds(0.5)
+                ///////////////////// SECOND SAMPLE ///////////////////////
+                .afterTime(1.5,AutoSeq.SamplePickPos(arm,slider))
+                .waitSeconds(0.7)
+                .strafeToLinearHeading(new Vector2d(11,-57),0)
+                .stopAndAdd(AutoSeq.SamplePickYawRight(arm,slider))
+                .afterTime(0.5,AutoSeq.SampleDropPos(arm,slider))
+                .strafeToLinearHeading(new Vector2d(-50,-55),0)
+                .stopAndAdd(AutoSeq.SampleDropYawRight(arm,slider))
+                .waitSeconds(0.5)
+                .afterTime(0.01,AutoSeq.HomePos(arm,slider))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(-48,-37),Math.PI/2 + Math.toRadians(4))
+                ////////////////////// THIRD SAMPLE ///////////////////////
+                .afterTime(0.01,AutoSeq.SamplePick(arm,slider))
+                .waitSeconds(1.5)
+                .afterTime(0.01,AutoSeq.SampleDropPos(arm,slider))
+                .strafeToConstantHeading(new Vector2d(-59,-48.5))
+                .afterTime(1,AutoSeq.SampleDropYawLeft(arm,slider))
+                .waitSeconds(2)
+                .afterTime(0.01,AutoSeq.HomePos(arm,slider))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(-57,-37),Math.PI/2 + Math.toRadians(4))
+                //////////////////////// FOURTH ELEMENT /////////////////////
+                .afterTime(0.01,AutoSeq.SamplePick(arm,slider))
+                .waitSeconds(1.5)
+                .afterTime(0.01,AutoSeq.SampleDropPos(arm,slider))
+                .strafeToConstantHeading(new Vector2d(-59,-49.5))
+                .afterTime(0.9,AutoSeq.SampleDropYawLeft(arm,slider))
+                .waitSeconds(2)
+                .afterTime(0.01,AutoSeq.HomePos(arm,slider))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(-63,-35),Math.PI/2 + Math.toRadians(4))
+                //////////////////////// FIFTH ELEMENT //////////////////////
+                .afterTime(0.01,AutoSeq.SamplePickYawLeft(arm,slider))
+                .waitSeconds(1.5)
+                .afterTime(0.01,AutoSeq.SampleDropPos(arm,slider))
+                .strafeToConstantHeading(new Vector2d(-59,-49.5))
+                .afterTime(0.9,AutoSeq.SampleDropYawLeft(arm,slider))
+                .waitSeconds(1)
+                .afterTime(0.01,AutoSeq.HomePos(arm,slider))
+                .waitSeconds(5)
+                .build();
 
         if(opModeInInit()) {
             Actions.runBlocking(AutoSeq.Init(arm, slider));
@@ -76,7 +116,7 @@ public class AutoTestOp extends LinearOpMode {
 
         waitForStart();
         if(opModeIsActive()){
-            Actions.runBlocking(test1);
+            Actions.runBlocking(test2);
 //            Actions.runBlocking(test2);
         }
 

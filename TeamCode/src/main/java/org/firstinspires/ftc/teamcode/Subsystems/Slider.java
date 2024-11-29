@@ -92,7 +92,7 @@ public class Slider {
     }
 
     public void setExt(int target){
-        int bottom_clip = (int)(robot.turret.getCurrentPosition()/1100*160);
+        int bottom_clip = (int)(robot.turret.getCurrentPosition()/1250*160);
         int target_clip = Math.max(Math.min(target - bottom_clip,3000),-bottom_clip);
         robot.extLeft.setTargetPosition(target_clip);
         robot.extRight.setTargetPosition(target_clip);
@@ -113,6 +113,6 @@ public class Slider {
     public void setTurret(int target){
         robot.turret.setTargetPosition(target);
         robot.turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.turret.setPower(0.4);
+        robot.turret.setPower(0.35);
     }
 }

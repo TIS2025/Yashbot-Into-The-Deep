@@ -15,7 +15,7 @@ public class MotorConst {
 
     public static int turretInit = 0;
     public static int turretUp = 0;
-    public static int turretDown = 1100;
+    public static int turretDown = 1250;
     public static int turretBucketPreDrop = 50;
     public static int turretSpecimenPrePick = 280;
     public static int turretSpecimenPreDrop = 0;
