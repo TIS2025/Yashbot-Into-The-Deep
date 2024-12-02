@@ -28,7 +28,6 @@ public class FinalSeq {
                 new SleepAction(0.2),
                 new InstantAction(() -> arm.updateShoulderState(Arm.ShoulderState.PRE_INTAKE)),
                 new InstantAction(() -> arm.updateElbowState(Arm.ElbowState.PRE_INTAKE)),
-                new InstantAction(() -> arm.updateWristState(Arm.WristState.WRIST0)),
                 new InstantAction(() -> arm.updateGripperState(Arm.GripperState.OPEN))
         );
     }
@@ -68,8 +67,46 @@ public class FinalSeq {
                 new SleepAction(1),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
-                new SleepAction(2),
+                new SleepAction(1),
                 HomePos(arm,slider)
+        );
+    }
+
+    public static Action SpecimenPickPos(Arm arm, Slider slider){
+        return new SequentialAction(
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_PRE_PICK)),
+                new SleepAction(0.5),
+                new InstantAction(()-> slider.updateTurretState(Slider.TurretState.SPECIMEN_PRE_PICK)),
+                new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
+                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_PICK)),
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PRE_PICK)),
+                new InstantAction(()-> arm.updateWristState(Arm.WristState.WRIST180)),
+                new InstantAction(()-> arm.updateYawState(Arm.YawState.SPECIMEN_PRE_PICK))
+        );
+    }
+
+    public static Action SpecimenPick(Arm arm, Slider slider){
+        return new SequentialAction(
+                new InstantAction(()-> arm.updateGripperState(Arm.GripperState.CLOSE)),
+                new SleepAction(0.15),
+                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PICK)),
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PICK)),
+                new InstantAction(()-> slider.updateTurretState(Slider.TurretState.SPECIMEN_PRE_DROP)),
+                new SleepAction(0.2),
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_PRE_DROP)),
+                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_DROP)),
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PRE_DROP)),
+                new InstantAction(()-> arm.updateYawState(Arm.YawState.SPECIMEN_PRE_DROP))
+        );
+    }
+
+    public static Action SpecimenDrop(Arm arm, Slider slider){
+        return new SequentialAction(
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_DROP)),
+                new SleepAction(0.5),
+                new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
+                new SleepAction(0.2),
+                SpecimenPickPos(arm,slider)
         );
     }
 

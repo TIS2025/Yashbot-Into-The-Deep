@@ -4,24 +4,29 @@ import com.acmerobotics.dashboard.config.Config;
 
 @Config
 public class MotorConst {
+
     public static int extInit = 0;
     public static int extMin = 0;
     public static int extMax = 0;
-    public static int extMid = 1200;
+    public static int extHorizontalMax = 1200;
     public static int extHighBucketDrop = 2900;
     public static int extSpecimenPrePick = 0;
-    public static int extSpecimenPreDrop = 550;
-    public static int extSpecimenDrop = 1050;
+    public static int extSpecimenPreDrop = 650;
+    public static int extSpecimenDrop = 1200;
 
     public static int turretInit = 0;
     public static int turretUp = 0;
     public static int turretDown = 1250;
     public static int turretBucketPreDrop = 50;
-    public static int turretSpecimenPrePick = 280;
+    public static int turretSpecimenPrePick = 150;
     public static int turretSpecimenPreDrop = 0;
     public static int turretSpecimenDrop = 0;
 
     public static int hangerInit = 0;
     public static int hangerUpPhase1 = 1100;
     public static int hangerDownPhase1 = 400;
+
+    public static double extPower = 1;
+    public static double turretPower = 0.35
+    ;
 }

@@ -16,9 +16,10 @@ public class AutoSeq {
                 new InstantAction(()->arm.updateYawState(Arm.YawState.AUTO_INIT)),
                 new InstantAction(()->arm.updateGripperState(Arm.GripperState.OPEN)),
                 new InstantAction(()->arm.updateWristState(Arm.WristState.WRIST0)),
-                new InstantAction(()->slider.updateExtState(Slider.ExtState.INIT)),
                 new InstantAction(()->slider.updateTurretState(Slider.TurretState.UP)),
-                new SleepAction(2),
+                new SleepAction(1),
+                new InstantAction(()->slider.updateExtState(Slider.ExtState.INIT)),
+                new SleepAction(1),
                 new InstantAction(()->arm.updateGripperState(Arm.GripperState.CLOSE))
         );
     }

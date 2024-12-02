@@ -5,8 +5,8 @@ import com.acmerobotics.dashboard.config.Config;
 @Config
 public class ServoConst {
     public static double gripperInit = 0.8;
-    public static double gripperOpen = 0.75;
-    public static double gripperClose = 0.875;
+    public static double gripperOpen = 0.8;
+    public static double gripperClose = 0.95;
 
     public static double wristInit = 0;
     public static double wrist0 = 0;
@@ -24,10 +24,10 @@ public class ServoConst {
     public static double elbowPostIntake = 0.455;
     public static double elbowPreBucketDrop = 0.55;
     public static double elbowBucketDrop = 0.58;
-    public static double elbowSpecimenPrePick = 0.605;
-    public static double elbowSpecimenPick = 0.63;
-    public static double elbowSpecimenPreDrop = 0.625;
-    public static double elbowSpecimenDrop = 0.625;
+    public static double elbowSpecimenPrePick = 0.6;
+    public static double elbowSpecimenPick = 0.61;
+    public static double elbowSpecimenPreDrop = 0.615;
+    public static double elbowSpecimenDrop = 0.615;
     public static double elbowAutoInit = 0.5;
 
 
@@ -42,12 +42,14 @@ public class ServoConst {
     public static double shoulderBucketDrop = 0.45;
     public static double shoulderSpecimenPrePick = 1;
     public static double shoulderSpecimenPick = 1;
-    public static double shoulderSpecimenPreDrop = 0.6;
-    public static double shoulderSpecimenDrop = 0.6;
+    public static double shoulderSpecimenPreDrop = 0.55;
+    public static double shoulderSpecimenDrop = 0.55;
     public static double shoulderAutoInit = 0.8;
 
     public static double yawInit = 0.5;
     public static double yawNeutral = 0.825;
+    public static double yawSpecimenPrePick = 0.775;
+    public static double yawSpecimenPreDrop = 0.825;
     public static double yawLeft = 0.5;
     public static double yawRight = 0.5;
     public static double yawHome = 0.45;
@@ -55,5 +57,5 @@ public class ServoConst {
     public static double yawAutoPickRight = 0.675;
     public static double yawAutoPickLeft = 0.975;
     public static double yawAutoSampleDropRight = 0.78;
-    public static double yawAutoSampleDropLeft = 0.9;
+    public static double yawAutoSampleDropLeft = 0.97;
 }
