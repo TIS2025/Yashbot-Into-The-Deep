@@ -33,9 +33,11 @@ public class TeleOp_Educo extends LinearOpMode {
     }
 
     //FLAGS
-    boolean SAMPLE_INPUT_FLAG = true;
+    boolean SAMPLE_INPUT_POS_FLAG = true;
     boolean SAMPLE_DROP_FLAG = false;
+    boolean HOME_POS_FLAG = false;
     boolean HANGER_FLAG = false;
+    boolean SAMPLE_PICK_FLAG = false;
 
     BotState botState = BotState.SAMPLE_MODE;
 
@@ -92,6 +94,10 @@ public class TeleOp_Educo extends LinearOpMode {
             );
             ftc = updateAction();
 
+            if(C2.dpad_down && C1.dpad_down){
+                HANGER_FLAG = true;
+            }
+
             //STATE SELECT
 //            if(C2.dpad_left && !P2.dpad_left){
 //                botState = BotState.SAMPLE_MODE;
@@ -105,47 +111,54 @@ public class TeleOp_Educo extends LinearOpMode {
 
 
 
-            if(C1.a && !P1.a && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_FLAG){
+            if(C1.a && !P1.a && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG){
 //                ftc.add(IntakeSeq.Home(arm,slider));
                 ftc.add(FinalSeq.HomePos(arm,slider));
+                HOME_POS_FLAG = true;
+                SAMPLE_PICK_FLAG = false;
             }
-            if(C1.b && !P1.b && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_FLAG){
+            if(C1.b && !P1.b && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG){
 //                ftc.add(IntakeSeq.PreSampleIntake(arm));
                 ftc.add(FinalSeq.SamplePickPos(arm));
+                HOME_POS_FLAG = false;
+                SAMPLE_PICK_FLAG = true;
             }
-            if(C1.x && !P1.x && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_FLAG){
+            if(C1.x && !P1.x && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG && SAMPLE_PICK_FLAG){
                 ftc.add(FinalSeq.SamplePick(arm,slider));
+                HOME_POS_FLAG = false;
+                SAMPLE_PICK_FLAG = false;
             }
 
-            if(C1.left_bumper && !P1.left_bumper && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_FLAG){
+            if(C1.left_bumper && !P1.left_bumper && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG && !HOME_POS_FLAG && !SAMPLE_PICK_FLAG){
                 ftc.add(FinalSeq.SampleDropPos(arm,slider));
-                SAMPLE_INPUT_FLAG = false;
+                SAMPLE_INPUT_POS_FLAG = false;
                 SAMPLE_DROP_FLAG = true;
             }
-            if(C1.right_bumper && !P1.right_bumper && botState == BotState.SAMPLE_MODE && SAMPLE_DROP_FLAG){
+            if(C1.right_bumper && !P1.right_bumper && botState == BotState.SAMPLE_MODE && SAMPLE_DROP_FLAG && !HOME_POS_FLAG){
                 ftc.add(FinalSeq.SampleDrop(arm,slider));
                 SAMPLE_DROP_FLAG = false;
-                SAMPLE_INPUT_FLAG = true;
+                SAMPLE_INPUT_POS_FLAG = true;
+                HOME_POS_FLAG = true;
             }
 
-            if(C2.left_bumper && !P2.left_bumper && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_FLAG){
+            if(C2.left_bumper && !P2.left_bumper && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG && !HOME_POS_FLAG){
                 slider_pos+=400;
                 slider_pos = Math.min(slider_pos,1200);
                 slider.setExt(slider_pos);
             }
-            if(C2.right_bumper && !P2.right_bumper && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_FLAG){
+            if(C2.right_bumper && !P2.right_bumper && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG && !HOME_POS_FLAG){
                 slider_pos-=400;
                 slider_pos = Math.max(slider_pos,0);
                 slider.setExt(slider_pos);
             }
 
-            if(C2.a && !P2.a && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_FLAG){
+            if(C2.a && !P2.a && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG){
                 wrist_rotate = !wrist_rotate;
                 arm.updateWristState(wrist_rotate? Arm.WristState.WRIST0: Arm.WristState.WRIST90);
             }
 
-            if(C2.left_trigger>0.75 && HANGER_FLAG) hanger.setHanger(1100);
-            if(C2.right_trigger>0.75 && HANGER_FLAG) hanger.setHanger(500);
+            if(C1.left_trigger>0.75 && !(P1.left_trigger>0.75) && HANGER_FLAG) ftc.add(FinalSeq.HighHang1(arm, slider, hanger));
+            if(C1.right_trigger>0.75 && !(P1.right_trigger>0.75) && HANGER_FLAG) ftc.add(FinalSeq.HighHang2(slider,hanger));
 
             telemetry.addData("Turret Pos",robot.turret.getCurrentPosition());
             telemetry.addData("Ext left Pos",robot.extLeft.getCurrentPosition());

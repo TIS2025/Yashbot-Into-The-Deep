@@ -36,7 +36,8 @@ public class Arm {
         SPECIMEN_PRE_PICK,
         SPECIMEN_PICK,
         SPECIMEN_PRE_DROP,
-        SPECIMEN_DROP
+        SPECIMEN_DROP,
+        PRE_HANG
     }
     public enum ShoulderState{
         INIT,
@@ -52,7 +53,8 @@ public class Arm {
         SPECIMEN_PRE_PICK,
         SPECIMEN_PICK,
         SPECIMEN_PRE_DROP,
-        SPECIMEN_DROP
+        SPECIMEN_DROP,
+        PRE_HANG
     }
     public enum YawState{
         INIT,
@@ -66,8 +68,8 @@ public class Arm {
         AUTO_SAMPLE_DROP_LEFT,
         AUTO_PICK_LEFT,
         SPECIMEN_PRE_PICK,
-        SPECIMEN_PRE_DROP
-
+        SPECIMEN_PRE_DROP,
+        PRE_HANG
     }
 
     public GripperState gripperState = GripperState.INIT;
@@ -159,6 +161,9 @@ public class Arm {
             case SPECIMEN_DROP:
                 setElbow(ServoConst.elbowSpecimenDrop);
                 break;
+            case PRE_HANG:
+                setElbow(ServoConst.elbowPreHang);
+                break;
         }
         elbowState = state;
     }
@@ -207,6 +212,9 @@ public class Arm {
             case SPECIMEN_DROP:
                 setShoulder(ServoConst.shoulderSpecimenDrop);
                 break;
+            case PRE_HANG:
+                setShoulder(ServoConst.shoulderPreHang);
+                break;
         }
         shoulderState = state;
     }
@@ -248,6 +256,9 @@ public class Arm {
                 break;
             case SPECIMEN_PRE_DROP:
                 setYaw(ServoConst.yawSpecimenPreDrop);
+                break;
+            case PRE_HANG:
+                setYaw(ServoConst.yawPreHang);
                 break;
         }
         yawState = state;

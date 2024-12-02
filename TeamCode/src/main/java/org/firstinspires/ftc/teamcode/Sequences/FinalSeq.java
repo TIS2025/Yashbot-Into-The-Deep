@@ -5,15 +5,19 @@ import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
+import com.sun.tools.javac.util.SharedNameTable;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorKLNavxMicro;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
+import org.firstinspires.ftc.teamcode.Subsystems.Hanger;
 import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 
 public class FinalSeq {
     public static Action HomePos(Arm arm, Slider slider) {
         return new SequentialAction(
-                new InstantAction(() -> slider.updateTurretState(Slider.TurretState.DOWN)),
                 new InstantAction(() -> slider.updateExtState(Slider.ExtState.MIN)),
+                new SleepAction(0.5),
+                new InstantAction(() -> slider.updateTurretState(Slider.TurretState.DOWN)),
                 new InstantAction(() -> arm.updateShoulderState(Arm.ShoulderState.HOME)),
                 new InstantAction(() -> arm.updateYawState(Arm.YawState.HOME)),
                 new InstantAction(() -> arm.updateElbowState(Arm.ElbowState.HOME)),
@@ -47,14 +51,14 @@ public class FinalSeq {
 
     public static Action SampleDropPos(Arm arm, Slider slider){
         return new SequentialAction(
-                new InstantAction(()-> arm.updateYawState(Arm.YawState.NEUTRAL)),
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
-                new SleepAction(0.3),
+                new SleepAction(0.2),
                 new InstantAction(()-> slider.updateTurretState(Slider.TurretState.UP)),
+                new SleepAction(0.7),
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.BUCKET_DROP)),
+                new SleepAction(0.2),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
-                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP)),
-                new SleepAction(1),
-                new InstantAction(()-> slider.updateExtState(Slider.ExtState.BUCKET_DROP))
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP))
         );
     }
 
@@ -62,12 +66,12 @@ public class FinalSeq {
     public static Action SampleDrop(Arm arm, Slider slider){
         return new SequentialAction(
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.BUCKET_DROP)),
-                new SleepAction(0.5),
+                new SleepAction(0.3),
                 new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
-                new SleepAction(1),
+                new SleepAction(0.3),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
-                new SleepAction(1),
+                new SleepAction(0.5),
                 HomePos(arm,slider)
         );
     }
@@ -107,6 +111,30 @@ public class FinalSeq {
                 new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
                 new SleepAction(0.2),
                 SpecimenPickPos(arm,slider)
+        );
+    }
+
+    public static Action HighHang1(Arm arm, Slider slider, Hanger hanger){
+        return new SequentialAction(
+                new InstantAction(()-> hanger.updateHangerState(Hanger.HangerState.PHASE1_UP)),
+                new InstantAction(()-> slider.updateTurretState(Slider.TurretState.PRE_HANG)),
+                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_HANG)),
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_HANG)),
+                new InstantAction(()-> arm.updateYawState(Arm.YawState.PRE_HANG)),
+                new InstantAction(()-> arm.updateWristState(Arm.WristState.WRIST180)),
+                new SleepAction(0.5),
+                //TODO EXT
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.BUCKET_DROP))
+        );
+    }
+
+    public static Action HighHang2(Slider slider, Hanger hanger){
+        return new SequentialAction(
+                new InstantAction(()-> hanger.updateHangerState(Hanger.HangerState.PHASE1_DOWN)),
+                new SleepAction(2),
+                new InstantAction(()-> slider.updateTurretState(Slider.TurretState.UP)),
+                new SleepAction(2),
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.HIGH_HANG))
         );
     }
 

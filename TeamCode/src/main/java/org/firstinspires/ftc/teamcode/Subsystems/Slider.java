@@ -19,7 +19,8 @@ public class Slider {
         BUCKET_DROP,
         SPECIMEN_PRE_PICK,
         SPECIMEN_PRE_DROP,
-        SPECIMEN_DROP
+        SPECIMEN_DROP,
+        HIGH_HANG
     }
     public enum TurretState{
         UP,
@@ -28,7 +29,8 @@ public class Slider {
         PRE_BUCKET_DROP,
         SPECIMEN_PRE_PICK,
         SPECIMEN_PRE_DROP,
-        SPECIMEN_DROP
+        SPECIMEN_DROP,
+        PRE_HANG
     }
 
     public ExtState extState = ExtState.INIT;
@@ -60,6 +62,9 @@ public class Slider {
             case SPECIMEN_DROP:
                 setExt(MotorConst.extSpecimenDrop);
                 break;
+            case HIGH_HANG:
+                setExt(MotorConst.extHighHang);
+                break;
         }
         extState = state;
     }
@@ -86,6 +91,9 @@ public class Slider {
                 break;
             case SPECIMEN_DROP:
                 setTurret(MotorConst.turretSpecimenDrop);
+                break;
+            case PRE_HANG:
+                setTurret(MotorConst.turretPreHang);
                 break;
         }
         turretState = state;
