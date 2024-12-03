@@ -2,9 +2,8 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
-import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,10 +11,9 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
-import org.firstinspires.ftc.teamcode.Sequences.AutoSeq;
+import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Sequences.FinalSeq;
 import org.firstinspires.ftc.teamcode.Sequences.InitSeq;
-import org.firstinspires.ftc.teamcode.Sequences.IntakeSeq;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Hanger;
 import org.firstinspires.ftc.teamcode.Subsystems.Slider;
@@ -26,25 +24,37 @@ import java.util.List;
 @TeleOp(group = "TeleOp", name = "Basic TeleOp Educo")
 public class TeleOp_Educo extends LinearOpMode {
     static List<Action> ftc = new ArrayList<>();
+    MecanumDrive drive;
 
     enum BotState{
         SAMPLE_MODE,
         SPECIMEN_MODE
     }
 
+    enum SampleState{
+        HOME_POS,
+        PICK_POS,
+        PICK,
+        DROP_POS,
+    }
+
+    enum SpecimenState{
+        PICK_POS,
+        DROP_POS,
+    }
+
+    SampleState sampleState = SampleState.HOME_POS;
+    SpecimenState specimenState = SpecimenState.PICK_POS;
+    BotState intakeState = BotState.SAMPLE_MODE;
+
     //FLAGS
-    boolean SAMPLE_INPUT_POS_FLAG = true;
-    boolean SAMPLE_DROP_FLAG = false;
-    boolean HOME_POS_FLAG = false;
-    boolean HANGER_FLAG = false;
-    boolean SAMPLE_PICK_FLAG = false;
+    boolean HANGER_FLAG2 = false;
+    boolean HANGER_FLAG1 = false;
 
-    BotState botState = BotState.SAMPLE_MODE;
-
-    int specimenState = 0;
     @Override
     public void runOpMode() throws InterruptedException {
         RobotHardware robot = new RobotHardware(hardwareMap);
+        drive = new MecanumDrive(hardwareMap,new Pose2d(new Vector2d(0,0),0));
         robot.init_encoders();
         Slider slider = new Slider(robot);
         Hanger hanger = new Hanger(robot);
@@ -60,6 +70,7 @@ public class TeleOp_Educo extends LinearOpMode {
 
         boolean wrist_rotate = true;
         double distance;
+        double drive_coeff = 1;
 
         while (opModeInInit()){
             P2.copy(C2);
@@ -83,82 +94,95 @@ public class TeleOp_Educo extends LinearOpMode {
             C2.copy(gamepad2);
             distance = robot.colorSensor.getDistance(DistanceUnit.MM);
 
-            robot.drive.setDrivePowers(
+            drive.setDrivePowers(
                     new PoseVelocity2d(
                             new Vector2d(
-                                    -C1.left_stick_y,
-                                    -C1.left_stick_x
+                                    -C1.left_stick_y*drive_coeff,
+                                    -C1.left_stick_x*drive_coeff
                             ),
                             -C1.right_stick_x*0.5
                     )
             );
             ftc = updateAction();
 
+            if(C1.left_trigger>0.5) drive_coeff = 0.25;
+            else drive_coeff = 1;
+
             if(C2.dpad_down && C1.dpad_down){
-                HANGER_FLAG = true;
+                HANGER_FLAG2 = true;
             }
 
-            //STATE SELECT
-//            if(C2.dpad_left && !P2.dpad_left){
-//                botState = BotState.SAMPLE_MODE;
-//                ftc.add(FinalSeq.HomePos(arm,slider));
-//            }
-//            if(C2.dpad_right && !P2.dpad_right){
-//                botState = BotState.SPECIMEN_MODE;
-//                ftc.add(IntakeSeq.PreSpecimenIntake(arm,slider));
-//            }
+            if(C1.dpad_down){
+                HANGER_FLAG1 = true;
+            }
 
-
-
-
-            if(C1.a && !P1.a && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG){
-//                ftc.add(IntakeSeq.Home(arm,slider));
+            if(C2.dpad_left && !P2.dpad_left && specimenState == SpecimenState.PICK_POS){
+                intakeState = BotState.SAMPLE_MODE;
+                sampleState = SampleState.HOME_POS;
                 ftc.add(FinalSeq.HomePos(arm,slider));
-                HOME_POS_FLAG = true;
-                SAMPLE_PICK_FLAG = false;
             }
-            if(C1.b && !P1.b && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG){
-//                ftc.add(IntakeSeq.PreSampleIntake(arm));
+
+            if(C2.dpad_right && !P2.dpad_right && sampleState == SampleState.HOME_POS){
+                specimenState = SpecimenState.PICK_POS;
+                intakeState = BotState.SPECIMEN_MODE;
+                ftc.add(FinalSeq.SpecimenPickPos(arm,slider));
+            }
+
+            if(C1.a && !P1.a && intakeState == BotState.SAMPLE_MODE && (sampleState == SampleState.HOME_POS || sampleState == SampleState.PICK_POS || sampleState == SampleState.PICK)){
+                ftc.add(FinalSeq.HomePos(arm,slider));
+                sampleState = SampleState.HOME_POS;
+            }
+
+            if(C1.b && !P1.b && intakeState == BotState.SAMPLE_MODE && (sampleState == SampleState.HOME_POS || sampleState == SampleState.PICK)){
                 ftc.add(FinalSeq.SamplePickPos(arm));
-                HOME_POS_FLAG = false;
-                SAMPLE_PICK_FLAG = true;
+                sampleState = SampleState.PICK_POS;
             }
-            if(C1.x && !P1.x && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG && SAMPLE_PICK_FLAG){
+
+            if(C1.x && !P1.x && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
                 ftc.add(FinalSeq.SamplePick(arm,slider));
-                HOME_POS_FLAG = false;
-                SAMPLE_PICK_FLAG = false;
+                sampleState = SampleState.PICK;
             }
 
-            if(C1.left_bumper && !P1.left_bumper && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG && !HOME_POS_FLAG && !SAMPLE_PICK_FLAG){
+            if(C1.left_bumper && !P1.left_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK){
                 ftc.add(FinalSeq.SampleDropPos(arm,slider));
-                SAMPLE_INPUT_POS_FLAG = false;
-                SAMPLE_DROP_FLAG = true;
-            }
-            if(C1.right_bumper && !P1.right_bumper && botState == BotState.SAMPLE_MODE && SAMPLE_DROP_FLAG && !HOME_POS_FLAG){
-                ftc.add(FinalSeq.SampleDrop(arm,slider));
-                SAMPLE_DROP_FLAG = false;
-                SAMPLE_INPUT_POS_FLAG = true;
-                HOME_POS_FLAG = true;
+                sampleState = SampleState.DROP_POS;
             }
 
-            if(C2.left_bumper && !P2.left_bumper && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG && !HOME_POS_FLAG){
+            if(C1.right_bumper && !P1.right_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.DROP_POS){
+                ftc.add(FinalSeq.SampleDrop(arm,slider));
+                sampleState = SampleState.HOME_POS;
+            }
+
+            if(C1.right_bumper && !P1.right_bumper && intakeState == BotState.SPECIMEN_MODE && specimenState == SpecimenState.DROP_POS){
+                ftc.add(FinalSeq.SpecimenDrop(arm,slider));
+                specimenState = SpecimenState.PICK_POS;
+            }
+            if(C1.left_bumper && !P1.left_bumper && intakeState == BotState.SPECIMEN_MODE && specimenState == SpecimenState.PICK_POS) {
+                ftc.add(FinalSeq.SpecimenPick(arm,slider));
+                specimenState = SpecimenState.DROP_POS;
+            }
+
+            if(C2.left_bumper && !P2.left_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
                 slider_pos+=400;
                 slider_pos = Math.min(slider_pos,1200);
                 slider.setExt(slider_pos);
             }
-            if(C2.right_bumper && !P2.right_bumper && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG && !HOME_POS_FLAG){
+            if(C2.right_bumper && !P2.right_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
                 slider_pos-=400;
                 slider_pos = Math.max(slider_pos,0);
                 slider.setExt(slider_pos);
             }
 
-            if(C2.a && !P2.a && botState == BotState.SAMPLE_MODE && SAMPLE_INPUT_POS_FLAG){
+            if(C2.a && !P2.a && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
                 wrist_rotate = !wrist_rotate;
                 arm.updateWristState(wrist_rotate? Arm.WristState.WRIST0: Arm.WristState.WRIST90);
             }
 
-            if(C1.left_trigger>0.75 && !(P1.left_trigger>0.75) && HANGER_FLAG) ftc.add(FinalSeq.HighHang1(arm, slider, hanger));
-            if(C1.right_trigger>0.75 && !(P1.right_trigger>0.75) && HANGER_FLAG) ftc.add(FinalSeq.HighHang2(slider,hanger));
+            if(C1.left_trigger>0.75 && !(P1.left_trigger>0.75) && HANGER_FLAG1) hanger.setHanger(1100);
+            if(C1.right_trigger>0.75 && !(P1.right_trigger>0.75) && HANGER_FLAG1) hanger.setHanger(500);
+
+            if(C1.left_trigger>0.75 && !(P1.left_trigger>0.75) && HANGER_FLAG2) ftc.add(FinalSeq.HighHang1(arm, slider, hanger));
+            if(C1.right_trigger>0.75 && !(P1.right_trigger>0.75) && HANGER_FLAG2) ftc.add(FinalSeq.HighHang2(slider,hanger));
 
             telemetry.addData("Turret Pos",robot.turret.getCurrentPosition());
             telemetry.addData("Ext left Pos",robot.extLeft.getCurrentPosition());
@@ -170,7 +194,9 @@ public class TeleOp_Educo extends LinearOpMode {
             telemetry.addData("Wrist",robot.wrist.getPosition());
             telemetry.addData("Gripper",robot.gripper.getPosition());
             telemetry.addData("Distance",distance);
-            telemetry.addData("intake_state",specimenState);
+            telemetry.addData("Specimen State",specimenState);
+            telemetry.addData("Sample State",sampleState);
+            telemetry.addData("IntakeState",intakeState);
             telemetry.update();
         }
     }

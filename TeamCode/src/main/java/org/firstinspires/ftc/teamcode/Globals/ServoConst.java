@@ -36,7 +36,7 @@ public class ServoConst {
     public static double shoulderUp = 0.5;
     public static double shoulderDown = 0.5;
     public static double shoulderHome = 0.3;
-    public static double shoulderPreIntake = 0.35;
+    public static double shoulderPreIntake = 0.36;
     public static double shoulderIntake = 0.45;
     public static double shoulderPostIntake = 0.25;
     public static double shoulderPreBucketDrop = 0.45;

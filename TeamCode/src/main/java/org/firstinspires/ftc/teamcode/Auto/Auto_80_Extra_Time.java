@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Sequences.AutoSeq;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Hanger;
@@ -15,16 +16,18 @@ import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 
 @Autonomous(group = "Auto", name = "Auto 1 + 4 Extra Time")
 public class Auto_80_Extra_Time extends LinearOpMode {
+    MecanumDrive drive;
     @Override
     public void runOpMode() throws InterruptedException {
         RobotHardware robot = new RobotHardware(hardwareMap);
+        drive = new MecanumDrive(hardwareMap,new Pose2d(new Vector2d(-40,-60),0));
         robot.init_encoders();
         Slider slider = new Slider(robot);
         Hanger hanger = new Hanger(robot);
         Arm arm = new Arm(robot);
         robot.reset_encoders();
 
-        Action autoSequence = robot.drive.actionBuilder(new Pose2d(new Vector2d(-40,-60),0))
+        Action autoSequence = drive.actionBuilder(new Pose2d(new Vector2d(-40,-60),0))
                 ///////////////////// FIRST SAMPLE ////////////////////////
                 .afterTime(0.01,AutoSeq.SampleDropPos(arm,slider))
                 .strafeToConstantHeading(new Vector2d(-50,-55))
@@ -69,11 +72,11 @@ public class Auto_80_Extra_Time extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(-59,-46.5))
                 .afterTime(0.9,AutoSeq.SampleDropYawLeft(arm,slider))
                 .waitSeconds(1.8)
-                .afterTime(0.01,AutoSeq.Init(arm,slider))
+                .afterTime(0.01,AutoSeq.SampleInit(arm,slider))
                 .build();
 
         if(opModeInInit()) {
-            Actions.runBlocking(AutoSeq.Init(arm, slider));
+            Actions.runBlocking(AutoSeq.SampleInit(arm, slider));
         }
 
         waitForStart();
@@ -81,7 +84,7 @@ public class Auto_80_Extra_Time extends LinearOpMode {
             Actions.runBlocking(autoSequence);
         }
 
-        Actions.runBlocking(AutoSeq.Init(arm, slider));
+        Actions.runBlocking(AutoSeq.SampleInit(arm, slider));
 
 
     }

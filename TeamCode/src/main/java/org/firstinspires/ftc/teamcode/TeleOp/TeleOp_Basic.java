@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
@@ -12,6 +13,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Sequences.AutoSeq;
 import org.firstinspires.ftc.teamcode.Sequences.FinalSeq;
 import org.firstinspires.ftc.teamcode.Sequences.InitSeq;
@@ -26,6 +28,7 @@ import java.util.List;
 @TeleOp(group = "TeleOp", name = "Basic TeleOp")
 public class TeleOp_Basic extends LinearOpMode {
     static List<Action> ftc = new ArrayList<>();
+    MecanumDrive drive;
 
     enum BotState{
         SAMPLE_MODE,
@@ -38,6 +41,7 @@ public class TeleOp_Basic extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         RobotHardware robot = new RobotHardware(hardwareMap);
+        drive = new MecanumDrive(hardwareMap,new Pose2d(new Vector2d(0,0),0));
         robot.init_encoders();
         Slider slider = new Slider(robot);
         Hanger hanger = new Hanger(robot);
@@ -76,7 +80,7 @@ public class TeleOp_Basic extends LinearOpMode {
             C2.copy(gamepad2);
             distance = robot.colorSensor.getDistance(DistanceUnit.MM);
 
-            robot.drive.setDrivePowers(
+            drive.setDrivePowers(
                     new PoseVelocity2d(
                             new Vector2d(
                                     -C1.left_stick_y,

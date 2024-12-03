@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 public class RobotHardware {
 
     //DRIVE
-    public MecanumDrive drive;
     DcMotorEx leftFront,leftBack,rightFront,rightBack;
 
     //SLIDER
@@ -30,9 +29,6 @@ public class RobotHardware {
     public RevColorSensorV3 colorSensor;
 
     public RobotHardware(HardwareMap hardwareMap){
-
-        //DRIVE init
-        this.drive = new MecanumDrive(hardwareMap,new Pose2d(new Vector2d(-40,-60),0));
 
         //SLIDER init
         this.extRight = hardwareMap.get(DcMotorEx.class,"extensionRight");

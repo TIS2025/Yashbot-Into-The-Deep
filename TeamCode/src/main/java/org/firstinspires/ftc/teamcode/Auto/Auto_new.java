@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Sequences.AutoSeq;
 import org.firstinspires.ftc.teamcode.Sequences.FinalAutoSeq;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
@@ -18,6 +19,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 @Config
 @Autonomous(group = "Auto", name = "Auto new")
 public class Auto_new extends LinearOpMode {
+
+    MecanumDrive drive;
 
     public static double afterTime1 = 0.4;
     public static double wait1 = 1.2;
@@ -55,13 +58,14 @@ public class Auto_new extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         RobotHardware robot = new RobotHardware(hardwareMap);
+        drive = new MecanumDrive(hardwareMap,new Pose2d(new Vector2d(-40,-60),0));
         robot.init_encoders();
         Slider slider = new Slider(robot);
         Hanger hanger = new Hanger(robot);
         Arm arm = new Arm(robot);
         robot.reset_encoders();
 
-        Action autoSequence = robot.drive.actionBuilder(new Pose2d(new Vector2d(-40,-60),0))
+        Action autoSequence = drive.actionBuilder(new Pose2d(new Vector2d(-40,-60),0))
                 ///////////////////// FIRST SAMPLE ////////////////////////
                 .afterTime(0.01, FinalAutoSeq.SampleDropPosYawRight0ExtTurretUp(arm,slider))
                 .strafeToConstantHeading(sample1drop)
@@ -106,13 +110,13 @@ public class Auto_new extends LinearOpMode {
                 .strafeToConstantHeading(sample5drop)
                 .afterTime(afterTime5_1,FinalAutoSeq.SampleDrop(arm,slider))
                 .waitSeconds(wait5_2)
-                .afterTime(0.01,AutoSeq.Init(arm,slider))
+                .afterTime(0.01,AutoSeq.SampleInit(arm,slider))
                 .strafeToConstantHeading(park)
                 .waitSeconds(wait5_3)
                 .build();
 
         if(opModeInInit()) {
-            Actions.runBlocking(AutoSeq.Init(arm, slider));
+            Actions.runBlocking(AutoSeq.SampleInit(arm, slider));
         }
 
         waitForStart();

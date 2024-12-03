@@ -16,13 +16,13 @@ public class FinalSeq {
     public static Action HomePos(Arm arm, Slider slider) {
         return new SequentialAction(
                 new InstantAction(() -> slider.updateExtState(Slider.ExtState.MIN)),
-                new SleepAction(0.5),
-                new InstantAction(() -> slider.updateTurretState(Slider.TurretState.DOWN)),
                 new InstantAction(() -> arm.updateShoulderState(Arm.ShoulderState.HOME)),
                 new InstantAction(() -> arm.updateYawState(Arm.YawState.HOME)),
                 new InstantAction(() -> arm.updateElbowState(Arm.ElbowState.HOME)),
                 new InstantAction(() -> arm.updateWristState(Arm.WristState.WRIST0)),
-                new InstantAction(() -> arm.updateGripperState(Arm.GripperState.OPEN))
+                new InstantAction(() -> arm.updateGripperState(Arm.GripperState.OPEN)),
+                new SleepAction(0.3),
+                new InstantAction(() -> slider.updateTurretState(Slider.TurretState.DOWN))
         );
     }
 
