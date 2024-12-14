@@ -50,6 +50,19 @@ public class AutoSeq {
         );
     }
 
+    public static Action SpecimenPickPos(Arm arm, Slider slider){
+        return new SequentialAction(
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_PRE_PICK)),
+                new SleepAction(0.5),
+                new InstantAction(()-> slider.updateTurretState(Slider.TurretState.SPECIMEN_PRE_PICK)),
+                new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
+                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_PICK)),
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PRE_PICK)),
+                new InstantAction(()-> arm.updateWristState(Arm.WristState.WRIST180)),
+                new InstantAction(()-> arm.updateYawState(Arm.YawState.SPECIMEN_PRE_PICK))
+        );
+    }
+
     public static Action SpecimenPick(Arm arm, Slider slider){
         return new SequentialAction(
                 new InstantAction(()-> arm.updateGripperState(Arm.GripperState.CLOSE)),
@@ -129,7 +142,7 @@ public class AutoSeq {
     public static Action SpecimenPickPosFromSampleDrop(Arm arm, Slider slider){
         return new SequentialAction(
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_PRE_PICK)),
-                new SleepAction(0.5),
+                new SleepAction(0.25),
                 new InstantAction(()-> slider.updateTurretState(Slider.TurretState.SPECIMEN_PRE_PICK)),
                 new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_PICK)),
