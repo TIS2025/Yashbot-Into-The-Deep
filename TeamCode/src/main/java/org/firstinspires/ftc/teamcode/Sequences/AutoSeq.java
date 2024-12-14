@@ -276,4 +276,15 @@ public class AutoSeq {
                 new InstantAction(()->slider.updateTurretState(Slider.TurretState.DOWN))
         );
     }
+
+    public static Action TeleOpInit(Arm arm, Slider slider){
+        return new SequentialAction(
+                new InstantAction(()->slider.updateExtState(Slider.ExtState.MIN)),
+                new InstantAction(()->arm.updateElbowState(Arm.ElbowState.AUTO_INIT)),
+                new InstantAction(()->arm.updateShoulderState(Arm.ShoulderState.AUTO_INIT)),
+                new InstantAction(()->arm.updateYawState(Arm.YawState.AUTO_INIT)),
+                new InstantAction(()->arm.updateGripperState(Arm.GripperState.OPEN)),
+                new InstantAction(()->arm.updateWristState(Arm.WristState.WRIST0))
+        );
+    }
 }

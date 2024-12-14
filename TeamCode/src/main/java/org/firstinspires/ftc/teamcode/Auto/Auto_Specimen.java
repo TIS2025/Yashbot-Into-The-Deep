@@ -32,26 +32,26 @@ public class Auto_Specimen extends LinearOpMode {
         Action autoSequence = drive.actionBuilder(new Pose2d(new Vector2d(6,-64),-Math.PI/2))
                 //PRELOAD SPECIMEN DROP
                 .afterTime(0.01,AutoSeq.SpecimenDropPos(arm,slider))
-                .strafeToConstantHeading(new Vector2d(4,-32))
+                .strafeToConstantHeading(new Vector2d(3,-32))
                 .stopAndAdd(AutoSeq.SpecimenDrop(arm,slider))
                 //SAMPLE 1 TO OBS
                 .afterTime(0.01,AutoSeq.SamplePickPosFromSpecimen(arm,slider))
-                .splineToLinearHeading(new Pose2d(new Vector2d(28,-33),Math.PI/12),Math.PI/4)
-                .stopAndAdd(AutoSeq.SamplePickForSpecimen(arm,slider))
-                .strafeToLinearHeading(new Vector2d(32,-44), -Math.PI/4)
-                .stopAndAdd(AutoSeq.SampleDropObsZone(arm,slider))
+                .afterTime(1.6,AutoSeq.SamplePickForSpecimen(arm,slider))
+                .splineToLinearHeading(new Pose2d(new Vector2d(27.5,-33),Math.PI/12),Math.PI/4)
+                .afterTime(0.6,AutoSeq.SampleDropObsZone(arm,slider))
+                .strafeToLinearHeading(new Vector2d(32,-43), -Math.PI/4)
                 //SAMPLE 2 TO OBS
                 .afterTime(0.01,AutoSeq.SamplePickPosFromObs(arm,slider))
-                .strafeToLinearHeading(new Vector2d(39,-33),Math.PI/12)
-                .stopAndAdd(AutoSeq.SamplePickForSpecimen(arm,slider))
+                .afterTime(0.9,AutoSeq.SamplePickForSpecimen(arm,slider))
+                .strafeToLinearHeading(new Vector2d(37,-33),Math.PI/12)
+                .afterTime(0.6,AutoSeq.SampleDropObsZone(arm,slider))
                 .strafeToLinearHeading(new Vector2d(38,-44), -Math.PI/4)
-                .stopAndAdd(AutoSeq.SampleDropObsZone(arm,slider))
                 //SAMPLE 3 TO OBS
                 .afterTime(0.01,AutoSeq.SamplePickPosFromObs(arm,slider))
+                .afterTime(0.9,AutoSeq.SamplePickForSpecimen(arm,slider))
                 .strafeToLinearHeading(new Vector2d(48,-33),Math.PI/12)
-                .stopAndAdd(AutoSeq.SamplePickForSpecimen(arm,slider))
+                .afterTime(0.6,AutoSeq.SampleDropObsZone(arm,slider))
                 .strafeToLinearHeading(new Vector2d(42,-44), -Math.PI/4)
-                .stopAndAdd(AutoSeq.SampleDropObsZone(arm,slider))
                 //FIRST SPECIMEN DROP
                 .afterTime(0.01,AutoSeq.SpecimenPickPosFromSampleDrop(arm,slider))
                 .waitSeconds(0.5)
@@ -71,7 +71,9 @@ public class Auto_Specimen extends LinearOpMode {
                 .stopAndAdd(AutoSeq.SpecimenPick(arm,slider))
                 .strafeToConstantHeading(new Vector2d(5,-31))
                 .stopAndAdd(AutoSeq.SpecimenDrop(arm,slider))
-                .waitSeconds(5)
+                //PARKING
+                .afterTime(0.01,AutoSeq.TeleOpInit(arm,slider))
+                .strafeToConstantHeading(new Vector2d(33,-64))
                 .build();
 
         if(opModeInInit()) {
