@@ -54,6 +54,10 @@ public class Auto_Specimen extends LinearOpMode {
                 .stopAndAdd(AutoSeq.SampleDropObsZone(arm,slider))
                 //FIRST SPECIMEN DROP
                 .afterTime(0.01,AutoSeq.SpecimenPickPosFromSampleDrop(arm,slider))
+                .strafeToLinearHeading(new Vector2d(36,-64),-Math.PI/2)
+                .stopAndAdd(AutoSeq.SpecimenPick(arm,slider))
+                .splineToConstantHeading(new Vector2d(6,-32),0)
+                .waitSeconds(5)
                 .build();
 
         if(opModeInInit()) {

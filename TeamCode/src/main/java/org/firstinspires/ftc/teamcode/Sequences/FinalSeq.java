@@ -71,7 +71,7 @@ public class FinalSeq {
                 new SleepAction(0.3),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
-                new SleepAction(0.5),
+                new SleepAction(0.7),
                 HomePos(arm,slider)
         );
     }

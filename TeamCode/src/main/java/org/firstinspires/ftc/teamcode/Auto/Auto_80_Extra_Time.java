@@ -86,6 +86,5 @@ public class Auto_80_Extra_Time extends LinearOpMode {
 
         Actions.runBlocking(AutoSeq.SampleInit(arm, slider));
 
-
     }
 }

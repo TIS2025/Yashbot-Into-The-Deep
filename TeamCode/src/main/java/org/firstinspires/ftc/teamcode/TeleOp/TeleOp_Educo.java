@@ -8,7 +8,9 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
@@ -25,6 +27,7 @@ import java.util.List;
 public class TeleOp_Educo extends LinearOpMode {
     static List<Action> ftc = new ArrayList<>();
     MecanumDrive drive;
+    public static double turn_coeff = 0.5;
 
     enum BotState{
         SAMPLE_MODE,
@@ -55,7 +58,6 @@ public class TeleOp_Educo extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         RobotHardware robot = new RobotHardware(hardwareMap);
         drive = new MecanumDrive(hardwareMap,new Pose2d(new Vector2d(0,0),0));
-        robot.init_encoders();
         Slider slider = new Slider(robot);
         Hanger hanger = new Hanger(robot);
         Arm arm = new Arm(robot);
@@ -73,15 +75,28 @@ public class TeleOp_Educo extends LinearOpMode {
         double drive_coeff = 1;
 
         while (opModeInInit()){
+            P1.copy(C1);
+            C1.copy(gamepad1);
             P2.copy(C2);
             C2.copy(gamepad2);
 
-            if(C2.left_bumper){
+            if(C1.left_bumper){
                 slider.setExt(robot.extLeft.getCurrentPosition() - 25);
             }
-            if(C2.right_bumper){
+            if(C1.right_bumper){
                 slider.setExt(robot.extLeft.getCurrentPosition() + 25);
             }
+
+            if(C1.left_trigger>0.5){
+                slider.setTurret(robot.turret.getCurrentPosition() - 25);
+            }
+            if(C1.right_trigger>0.5){
+                slider.setTurret(robot.turret.getCurrentPosition() + 25);
+            }
+
+            telemetry.addData("Slider Pos",robot.extLeft.getCurrentPosition());
+            telemetry.addData("Turret Pos",robot.turret.getCurrentPosition());
+            telemetry.update();
         }
 
         robot.reset_encoders();
@@ -95,13 +110,7 @@ public class TeleOp_Educo extends LinearOpMode {
             distance = robot.colorSensor.getDistance(DistanceUnit.MM);
 
             drive.setDrivePowers(
-                    new PoseVelocity2d(
-                            new Vector2d(
-                                    -C1.left_stick_y*drive_coeff,
-                                    -C1.left_stick_x*drive_coeff
-                            ),
-                            -C1.right_stick_x*0.5
-                    )
+                    driveCommand(C1,drive_coeff)
             );
             ftc = updateAction();
 
@@ -188,15 +197,10 @@ public class TeleOp_Educo extends LinearOpMode {
             telemetry.addData("Ext left Pos",robot.extLeft.getCurrentPosition());
             telemetry.addData("Ext right Pos",robot.extRight.getCurrentPosition());
             telemetry.addData("Hanger Pos",robot.hanger.getCurrentPosition());
-            telemetry.addData("Shoulder",robot.shoulder.getPosition());
-            telemetry.addData("Yaw",robot.yaw.getPosition());
-            telemetry.addData("Elbow",robot.elbow.getPosition());
-            telemetry.addData("Wrist",robot.wrist.getPosition());
-            telemetry.addData("Gripper",robot.gripper.getPosition());
-            telemetry.addData("Distance",distance);
-            telemetry.addData("Specimen State",specimenState);
-            telemetry.addData("Sample State",sampleState);
-            telemetry.addData("IntakeState",intakeState);
+            telemetry.addData("Drive Current FL",drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Drive Current FR",drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Drive Current BL",drive.leftBack.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Drive Current BR",drive.rightBack.getCurrent(CurrentUnit.MILLIAMPS));
             telemetry.update();
         }
     }
@@ -214,5 +218,13 @@ public class TeleOp_Educo extends LinearOpMode {
         }
 //        runningActions.removeAll(RemovableActions);
         return newActions;
+    }
+
+    private PoseVelocity2d driveCommand(Gamepad G,double drive_coeff){
+        double x = Math.pow(Range.clip(-G.left_stick_y,-1,1),3)*drive_coeff;
+        double y = Math.pow(Range.clip(-G.left_stick_x,-1,1),3)*drive_coeff;
+        double angVel = Math.pow(Range.clip(-G.right_stick_x,-1,1),3)*turn_coeff;
+
+        return new PoseVelocity2d(new Vector2d(x,y),angVel);
     }
 }

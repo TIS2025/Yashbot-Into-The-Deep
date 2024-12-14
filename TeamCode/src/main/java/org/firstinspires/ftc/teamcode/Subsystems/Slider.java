@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 
 public class Slider {
     private final RobotHardware robot;
-    public Slider(RobotHardware robot){this.robot = robot;}
+    public Slider(RobotHardware  robot){this.robot = robot;}
 
     public enum ExtState{
         MIN,

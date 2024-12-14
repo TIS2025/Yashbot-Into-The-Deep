@@ -50,6 +50,21 @@ public class AutoSeq {
         );
     }
 
+    public static Action SpecimenPick(Arm arm, Slider slider){
+        return new SequentialAction(
+                new InstantAction(()-> arm.updateGripperState(Arm.GripperState.CLOSE)),
+                new SleepAction(0.15),
+                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PICK)),
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PICK)),
+                new InstantAction(()-> slider.updateTurretState(Slider.TurretState.SPECIMEN_PRE_DROP)),
+                new SleepAction(0.2),
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_PRE_DROP)),
+                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_DROP)),
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PRE_DROP)),
+                new InstantAction(()-> arm.updateYawState(Arm.YawState.SPECIMEN_PRE_DROP))
+        );
+    }
+
     public static Action SpecimenDrop(Arm arm, Slider slider){
         return new SequentialAction(
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_DROP)),
