@@ -23,8 +23,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(group = "TeleOp", name = "Basic TeleOp Educo")
-public class TeleOp_Educo extends LinearOpMode {
+@TeleOp(group = "TeleOp", name = "TeleOp Basic Aadhaar")
+public class TeleOp_Aadhaar extends LinearOpMode {
     static List<Action> ftc = new ArrayList<>();
     MecanumDrive drive;
     public static double turn_coeff = 0.5;
@@ -55,7 +55,7 @@ public class TeleOp_Educo extends LinearOpMode {
     SampleState sampleState = SampleState.HOME_POS;
     SpecimenState specimenState = SpecimenState.PICK_POS;
     BotState intakeState = BotState.SAMPLE_MODE;
-    DriveState driveState = DriveState.BOT_CENTRIC;
+    DriveState driveState = DriveState.FIELD_CENTRIC;
 
     //FLAGS
     boolean HANGER_FLAG2 = false;
@@ -101,13 +101,6 @@ public class TeleOp_Educo extends LinearOpMode {
                 slider.setTurret(robot.turret.getCurrentPosition() + 25);
             }
 
-            if(C2.left_stick_button && !P2.left_stick_button && driveState==DriveState.BOT_CENTRIC){
-                driveState = DriveState.FIELD_CENTRIC;
-            }
-            if(C2.left_stick_button && !P2.left_stick_button && driveState==DriveState.FIELD_CENTRIC){
-                driveState = DriveState.BOT_CENTRIC;
-            }
-
             telemetry.addData("Slider Pos",robot.extLeft.getCurrentPosition());
             telemetry.addData("Turret Pos",robot.turret.getCurrentPosition());
             telemetry.update();
@@ -122,10 +115,25 @@ public class TeleOp_Educo extends LinearOpMode {
             P2.copy(C2);
             C2.copy(gamepad2);
             distance = robot.colorSensor.getDistance(DistanceUnit.MM);
+            drive.updatePoseEstimate();
 
-            drive.setDrivePowers(
-                    driveCommand(C1,drive_coeff)
-            );
+            switch (driveState){
+                case BOT_CENTRIC:
+                    drive.setDrivePowers(
+                            driveCommand(C1,drive_coeff)
+                    );
+                    break;
+                case FIELD_CENTRIC:
+                    drive.DriveFieldCentric(-C1.left_stick_x,-C1.left_stick_y,C1.right_stick_x,botHeading,drive_coeff);
+                    break;
+            }
+
+            if(C2.left_trigger>0.5 && C2.right_trigger>0.5 && driveState == DriveState.BOT_CENTRIC){
+                driveState = DriveState.FIELD_CENTRIC;
+            }
+            if(C2.left_trigger>0.5 && C2.right_trigger>0.5 && driveState == DriveState.FIELD_CENTRIC){
+                driveState = DriveState.BOT_CENTRIC;
+            }
 
             botHeading = drive.pose.heading.toDouble();
             if (C1.options && !P1.options && driveState == DriveState.FIELD_CENTRIC) {
@@ -157,27 +165,27 @@ public class TeleOp_Educo extends LinearOpMode {
                 ftc.add(FinalSeq.SpecimenPickPos(arm,slider));
             }
 
-            if(C1.a && !P1.a && intakeState == BotState.SAMPLE_MODE && (sampleState == SampleState.HOME_POS || sampleState == SampleState.PICK_POS || sampleState == SampleState.PICK)){
+            if(C1.x && !P1.x && intakeState == BotState.SAMPLE_MODE && (sampleState == SampleState.HOME_POS || sampleState == SampleState.PICK_POS || sampleState == SampleState.PICK)){
                 ftc.add(FinalSeq.HomePos(arm,slider));
                 sampleState = SampleState.HOME_POS;
             }
 
-            if(C1.b && !P1.b && intakeState == BotState.SAMPLE_MODE && (sampleState == SampleState.HOME_POS || sampleState == SampleState.PICK)){
+            if(C1.left_bumper && !P1.left_bumper && intakeState == BotState.SAMPLE_MODE && (sampleState == SampleState.HOME_POS || sampleState == SampleState.PICK)){
                 ftc.add(FinalSeq.SamplePickPos(arm));
                 sampleState = SampleState.PICK_POS;
             }
 
-            if(C1.x && !P1.x && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
+            if(C1.a && !P1.a && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
                 ftc.add(FinalSeq.SamplePick(arm,slider));
                 sampleState = SampleState.PICK;
             }
 
-            if(C1.left_bumper && !P1.left_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK){
+            if(C2.dpad_up && !P2.dpad_up && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK){
                 ftc.add(FinalSeq.SampleDropPos(arm,slider));
                 sampleState = SampleState.DROP_POS;
             }
 
-            if(C1.right_bumper && !P1.right_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.DROP_POS){
+            if(C1.b && !P1.b && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.DROP_POS){
                 ftc.add(FinalSeq.SampleDrop(arm,slider));
                 sampleState = SampleState.HOME_POS;
             }
@@ -218,6 +226,7 @@ public class TeleOp_Educo extends LinearOpMode {
             telemetry.addData("Ext right Pos",robot.extRight.getCurrentPosition());
             telemetry.addData("Hanger Pos",robot.hanger.getCurrentPosition());
             telemetry.addData("Drive State",driveState);
+            telemetry.addData("Heading",botHeading);
             telemetry.addData("Drive Current FL",drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));
             telemetry.addData("Drive Current FR",drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));
             telemetry.addData("Drive Current BL",drive.leftBack.getCurrent(CurrentUnit.MILLIAMPS));
@@ -241,7 +250,7 @@ public class TeleOp_Educo extends LinearOpMode {
         return newActions;
     }
 
-    private PoseVelocity2d driveCommand(Gamepad G,double drive_coeff){
+    private PoseVelocity2d driveCommand(Gamepad G, double drive_coeff){
         double x = Math.pow(Range.clip(-G.left_stick_y,-1,1),3)*drive_coeff;
         double y = Math.pow(Range.clip(-G.left_stick_x,-1,1),3)*drive_coeff;
         double angVel = Math.pow(Range.clip(-G.right_stick_x,-1,1),3)*turn_coeff;

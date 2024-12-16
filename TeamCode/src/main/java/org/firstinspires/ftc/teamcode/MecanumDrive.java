@@ -521,7 +521,7 @@ public final class MecanumDrive {
 //        }
 //        return currentPower + deltaPower;
 //    }
-    public void DriveFieldCentric(double x, double y, double rx, double botHeading){
+    public void DriveFieldCentric(double x, double y, double rx, double botHeading,double drive_coeff){
 
         double rotX = (x * Math.cos(botHeading) - y * Math.sin(botHeading));
         double rotY = (x * Math.sin(botHeading) + y * Math.cos(botHeading));
@@ -539,10 +539,10 @@ public final class MecanumDrive {
         double frontRightPower = (rotY + rotX - rx) / denominator;
         double backRightPower = (rotY - rotX - rx) / denominator;
 
-        leftFront.setPower(frontLeftPower);
-        leftBack.setPower(backLeftPower);
-        rightFront.setPower(frontRightPower);
-        rightBack.setPower(backRightPower);
+        leftFront.setPower(frontLeftPower*drive_coeff);
+        leftBack.setPower(backLeftPower*drive_coeff);
+        rightFront.setPower(frontRightPower*drive_coeff);
+        rightBack.setPower(backRightPower*drive_coeff);
 
     }
 
