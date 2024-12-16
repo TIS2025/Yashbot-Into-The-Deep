@@ -24,7 +24,7 @@ public class ServoConst {
     public static double elbowPostIntake = 0.455;
     public static double elbowPreBucketDrop = 0.55;
     public static double elbowBucketDrop = 0.58;
-    public static double elbowSpecimenPrePick = 0.6;
+    public static double elbowSpecimenPrePick = 0.598;
     public static double elbowSpecimenPick = 0.61;
     public static double elbowSpecimenPreDrop = 0.615;
     public static double elbowSpecimenDrop = 0.615;
@@ -36,7 +36,7 @@ public class ServoConst {
     public static double shoulderUp = 0.5;
     public static double shoulderDown = 0.5;
     public static double shoulderHome = 0.3;
-    public static double shoulderPreIntake = 0.36;
+    public static double shoulderPreIntake = 0.35;
     public static double shoulderIntake = 0.45;
     public static double shoulderPostIntake = 0.25;
     public static double shoulderPreBucketDrop = 0.45;

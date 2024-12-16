@@ -135,7 +135,8 @@ public class AutoSeq {
                 new InstantAction(() -> arm.updateElbowState(Arm.ElbowState.PRE_INTAKE)),
                 new InstantAction(() -> arm.updateWristState(Arm.WristState.WRIST0)),
                 new SleepAction(0.35),
-                new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN))
+                new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
+                new SleepAction(0.1)
         );
     }
 

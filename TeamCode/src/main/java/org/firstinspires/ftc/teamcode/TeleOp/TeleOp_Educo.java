@@ -28,6 +28,7 @@ public class TeleOp_Educo extends LinearOpMode {
     static List<Action> ftc = new ArrayList<>();
     MecanumDrive drive;
     public static double turn_coeff = 0.5;
+    double botHeading;
 
     enum BotState{
         SAMPLE_MODE,
@@ -46,9 +47,15 @@ public class TeleOp_Educo extends LinearOpMode {
         DROP_POS,
     }
 
+    enum DriveState{
+        FIELD_CENTRIC,
+        BOT_CENTRIC
+    }
+
     SampleState sampleState = SampleState.HOME_POS;
     SpecimenState specimenState = SpecimenState.PICK_POS;
     BotState intakeState = BotState.SAMPLE_MODE;
+    DriveState driveState = DriveState.BOT_CENTRIC;
 
     //FLAGS
     boolean HANGER_FLAG2 = false;
@@ -94,6 +101,13 @@ public class TeleOp_Educo extends LinearOpMode {
                 slider.setTurret(robot.turret.getCurrentPosition() + 25);
             }
 
+            if(C2.left_stick_button && !P2.left_stick_button && driveState==DriveState.BOT_CENTRIC){
+                driveState = DriveState.FIELD_CENTRIC;
+            }
+            if(C2.left_stick_button && !P2.left_stick_button && driveState==DriveState.FIELD_CENTRIC){
+                driveState = DriveState.BOT_CENTRIC;
+            }
+
             telemetry.addData("Slider Pos",robot.extLeft.getCurrentPosition());
             telemetry.addData("Turret Pos",robot.turret.getCurrentPosition());
             telemetry.update();
@@ -109,9 +123,22 @@ public class TeleOp_Educo extends LinearOpMode {
             C2.copy(gamepad2);
             distance = robot.colorSensor.getDistance(DistanceUnit.MM);
 
-            drive.setDrivePowers(
-                    driveCommand(C1,drive_coeff)
-            );
+            switch (driveState){
+                case BOT_CENTRIC:
+                    drive.setDrivePowers(
+                            driveCommand(C1,drive_coeff)
+                    );
+                    break;
+                case FIELD_CENTRIC:
+                    drive.DriveFieldCentric(-C1.left_stick_y,C1.left_stick_x,C1.right_stick_x,botHeading);
+                    break;
+            }
+
+            botHeading = drive.pose.heading.toDouble();
+            if (C1.options && !P1.options && driveState == DriveState.FIELD_CENTRIC) {
+                drive.navxMicro.initialize();
+            }
+
             ftc = updateAction();
 
             if(C1.left_trigger>0.5) drive_coeff = 0.25;
@@ -197,6 +224,7 @@ public class TeleOp_Educo extends LinearOpMode {
             telemetry.addData("Ext left Pos",robot.extLeft.getCurrentPosition());
             telemetry.addData("Ext right Pos",robot.extRight.getCurrentPosition());
             telemetry.addData("Hanger Pos",robot.hanger.getCurrentPosition());
+            telemetry.addData("Drive State",driveState);
             telemetry.addData("Drive Current FL",drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));
             telemetry.addData("Drive Current FR",drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));
             telemetry.addData("Drive Current BL",drive.leftBack.getCurrent(CurrentUnit.MILLIAMPS));
