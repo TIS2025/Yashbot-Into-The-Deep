@@ -7,7 +7,7 @@ public class MotorConst {
 
     public static int extInit = 0;
     public static int extMin = 0;
-    public static int extMax = 0;
+    public static int extMax = 2900;
     public static int extHorizontalMax = 1200;
     public static int extHighBucketDrop = 2900;
     public static int extSpecimenPrePick = 0;

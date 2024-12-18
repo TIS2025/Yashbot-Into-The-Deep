@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
+import android.net.wifi.aware.WifiAwareNetworkInfo;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -8,6 +10,7 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Globals.MotorConst;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Sequences.AutoSeq;
@@ -67,61 +70,92 @@ public class Auto_new extends LinearOpMode {
 
         Action autoSequence = drive.actionBuilder(new Pose2d(new Vector2d(-40,-60),0))
                 ///////////////////// FIRST SAMPLE ////////////////////////
-                .afterTime(0.01, FinalAutoSeq.SampleDropPosYawRight0ExtTurretUp(arm,slider))
+//                .afterTime(0.01, FinalAutoSeq.SampleDropPosYawRight(arm,slider))
                 .strafeToConstantHeading(sample1drop)
-                .afterTime(afterTime1,FinalAutoSeq.SampleDrop(arm,slider))
-                .waitSeconds(wait1)
+                .waitSeconds(0.3)
+                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
                 ///////////////////// SECOND SAMPLE ///////////////////////
-                .afterTime(afterTime2_1,FinalAutoSeq.SamplePickPosFullExtRightYaw(arm,slider))
-                .strafeToLinearHeading(sample2pick,0)
-                .stopAndAdd(FinalAutoSeq.SamplePick(arm,slider))
+//                .afterTime(0.3,FinalAutoSeq.SamplePickPosFullExtRightYaw(arm,slider))
+//                .strafeToLinearHeading(sample2pick,0)
+//                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
+//                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawRight(arm,slider))
+//                .strafeToLinearHeading(sample2drop,0)
+//                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
+                .waitSeconds(1)
+//                .stopAndAdd(FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider))
                 .waitSeconds(wait2_1)
-                .afterTime(afterTime2_2,FinalAutoSeq.SampleDropPosYawRightMaxExt(arm,slider))
-                .strafeToLinearHeading(sample2drop,0)
-                .stopAndAdd(FinalAutoSeq.SampleDrop(arm,slider))
-                .waitSeconds(wait2_2)
-                .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider))
-                .waitSeconds(wait2_3)
                 .strafeToLinearHeading(sample3pick,Math.PI/2 + Math.toRadians(4))
                 ////////////////////// THIRD SAMPLE ///////////////////////
-                .afterTime(0.01,FinalAutoSeq.SamplePick(arm,slider))
+                .afterTime(0.01,FinalAutoSeq.SamplePick(arm))
                 .waitSeconds(wait3_1)
-                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawLeft0Ext(arm,slider))
+//                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawLeft(arm,slider))
                 .strafeToConstantHeading(sample3drop)
-                .afterTime(afterTime3_1,FinalAutoSeq.SampleDrop(arm,slider))
+                .afterTime(afterTime3_1,FinalAutoSeq.SampleDrop(arm))
                 .waitSeconds(wait3_2)
-                .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider))
+//                .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider))
                 .waitSeconds(wait3_3)
                 .strafeToLinearHeading(sample4pick,Math.PI/2 + Math.toRadians(4))
                 //////////////////////// FOURTH ELEMENT /////////////////////
-                .afterTime(0.01,FinalAutoSeq.SamplePick(arm,slider))
+                .afterTime(0.01,FinalAutoSeq.SamplePick(arm))
                 .waitSeconds(wait4_1)
-                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawLeft0Ext(arm,slider))
+//                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawLeft(arm,slider))
                 .strafeToConstantHeading(sample4drop)
-                .afterTime(afterTime4_1,FinalAutoSeq.SampleDrop(arm,slider))
+                .afterTime(afterTime4_1,FinalAutoSeq.SampleDrop(arm))
                 .waitSeconds(wait4_2)
-                .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtLeftYaw(arm,slider))
+//                .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtLeftYaw(arm,slider))
                 .waitSeconds(wait4_3)
                 .strafeToLinearHeading(sample5pick,Math.PI/2 + Math.toRadians(4))
                 //////////////////////// FIFTH ELEMENT //////////////////////
-                .afterTime(0.01,FinalAutoSeq.SamplePick(arm,slider))
+                .afterTime(0.01,FinalAutoSeq.SamplePick(arm))
                 .waitSeconds(wait5_1)
-                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawLeft0Ext(arm,slider))
+//                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawLeft(arm,slider))
                 .strafeToConstantHeading(sample5drop)
-                .afterTime(afterTime5_1,FinalAutoSeq.SampleDrop(arm,slider))
+                .afterTime(afterTime5_1,FinalAutoSeq.SampleDrop(arm))
                 .waitSeconds(wait5_2)
                 .afterTime(0.01,AutoSeq.SampleInit(arm,slider))
                 .strafeToConstantHeading(park)
                 .waitSeconds(wait5_3)
                 .build();
 
+        Action testSeq = drive.actionBuilder(new Pose2d(new Vector2d(-40,-60),0))
+                .stopAndAdd(FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extInit,MotorConst.turretInit))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SamplePickPosFullExtRightYaw(arm,slider,MotorConst.extHighBucketDrop,MotorConst.turretUp))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extHorizontalMax,MotorConst.turretDown))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,MotorConst.extHighBucketDrop))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extMin,MotorConst.turretDown))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SamplePickPosNoExtLeftYaw(arm,slider,MotorConst.extHighBucketDrop))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extHorizontalMax,MotorConst.turretDown))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
+                .waitSeconds(2)
+                .stopAndAdd(FinalAutoSeq.TeleOpInit(arm,slider,MotorConst.extHighBucketDrop))
+                .build();
+
         if(opModeInInit()) {
-            Actions.runBlocking(AutoSeq.SampleInit(arm, slider));
+            Actions.runBlocking(FinalAutoSeq.Init(arm, slider));
         }
 
         waitForStart();
         if(opModeIsActive()){
-            Actions.runBlocking(autoSequence);
+            Actions.runBlocking(testSeq);
         }
 
 

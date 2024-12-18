@@ -7,12 +7,14 @@ import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 
+import org.firstinspires.ftc.teamcode.Globals.MotorConst;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 
 @Config
 public class FinalAutoSeq {
-    public static double t1=1,t2=1,t3=1,t4=1;
+    public static double turretTimeConst = 0.55;
+    public static double extTimeConst = 1.3;
     public static Action Init(Arm arm, Slider slider){
         return new SequentialAction(
                 new InstantAction(()->arm.updateElbowState(Arm.ElbowState.AUTO_INIT)),
@@ -27,7 +29,10 @@ public class FinalAutoSeq {
         );
     }
 
-    public static Action SamplePickPosNoExtNoYaw(Arm arm, Slider slider){
+    public static Action SamplePickPosNoExtNoYaw(Arm arm, Slider slider, int ExtPos){
+
+        double extTime = (double) Math.abs(ExtPos - MotorConst.extMin) /MotorConst.extMax * extTimeConst;
+
         return new SequentialAction(
                 new ParallelAction(
                         new InstantAction(()->slider.updateExtState(Slider.ExtState.MIN)),
@@ -37,12 +42,15 @@ public class FinalAutoSeq {
                         new InstantAction(()->arm.updateGripperState(Arm.GripperState.OPEN)),
                         new InstantAction(()->arm.updateWristState(Arm.WristState.WRIST0))
                 ),
-                new SleepAction(1),
+                new SleepAction(extTime),
                 new InstantAction(()->slider.updateTurretState(Slider.TurretState.DOWN))
         );
     }
 
-    public static Action SamplePickPosNoExtLeftYaw(Arm arm, Slider slider){
+    public static Action SamplePickPosNoExtLeftYaw(Arm arm, Slider slider, int ExtPos){
+
+        double extTime = (double) Math.abs(ExtPos - MotorConst.extMin) /MotorConst.extMax * extTimeConst;
+
         return new SequentialAction(
                 new ParallelAction(
                         new InstantAction(()->slider.updateExtState(Slider.ExtState.MIN)),
@@ -51,13 +59,17 @@ public class FinalAutoSeq {
                         new InstantAction(()->arm.updateGripperState(Arm.GripperState.OPEN)),
                         new InstantAction(()->arm.updateWristState(Arm.WristState.AUTO_PICK_LEFT))
                 ),
-                new SleepAction(1),
+                new SleepAction(extTime),
                 new InstantAction(()->slider.updateTurretState(Slider.TurretState.DOWN)),
                 new InstantAction(()->arm.updateYawState(Arm.YawState.AUTO_PICK_LEFT))
         );
     }
 
-    public static Action SamplePickPosFullExtRightYaw(Arm arm, Slider slider){
+    public static Action SamplePickPosFullExtRightYaw(Arm arm, Slider slider, int ExtPos, int TurPos){
+
+        double extTime = (double) Math.abs(ExtPos - MotorConst.extMin) /MotorConst.extMax * extTimeConst;
+        double turTime = (double) Math.abs(TurPos - MotorConst.turretDown)/MotorConst.turretDown * turretTimeConst;
+
         return new SequentialAction(
                 new ParallelAction(
                         new InstantAction(()->slider.updateExtState(Slider.ExtState.MIN)),
@@ -67,96 +79,66 @@ public class FinalAutoSeq {
                         new InstantAction(()->arm.updateGripperState(Arm.GripperState.OPEN)),
                         new InstantAction(()->arm.updateWristState(Arm.WristState.AUTO_PICK_RIGHT))
                 ),
-                new SleepAction(1),
+                new SleepAction(extTime),
                 new InstantAction(()->slider.updateTurretState(Slider.TurretState.DOWN)),
                 new InstantAction(()->arm.updateYawState(Arm.YawState.AUTO_PICK_RIGHT)),
-                new SleepAction(1),
+                new SleepAction(turTime),
                 new InstantAction(()->slider.updateExtState(Slider.ExtState.MID))
         );
     }
 
-    public static Action SampleDropPosNoYaw0Ext(Arm arm, Slider slider){
+    public static Action SampleDropPosYawLeft(Arm arm, Slider slider, int ExtPos, int TurPos){
+
+        double turTime = (double) Math.abs(TurPos - MotorConst.turretUp)/MotorConst.turretDown * turretTimeConst;
+        double extTime = (double) Math.abs(ExtPos - MotorConst.extMin) /MotorConst.extMax * extTimeConst;
+
         return new SequentialAction(
-                new InstantAction(()-> arm.updateYawState(Arm.YawState.NEUTRAL)),
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
+                new SleepAction(extTime),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
                 new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP)),
                 new InstantAction(()->slider.updateTurretState(Slider.TurretState.UP)),
-                new SleepAction(1),
-                new InstantAction(()->slider.updateExtState(Slider.ExtState.BUCKET_DROP))
+                new SleepAction(turTime),
+                new InstantAction(()->slider.updateExtState(Slider.ExtState.BUCKET_DROP)),
+                new InstantAction(()-> arm.updateYawState(Arm.YawState.AUTO_SAMPLE_DROP_LEFT))
         );
     }
 
-    public static Action SampleDropPosNoYawMaxExt(Arm arm, Slider slider){
+    public static Action SampleDropPosYawRight(Arm arm, Slider slider, int ExtPos, int TurPos){
+
+        double turTime = (double) Math.abs(TurPos - MotorConst.turretUp)/MotorConst.turretDown * turretTimeConst;
+        double extTime = (double) Math.abs(ExtPos - MotorConst.extMin) /MotorConst.extMax * extTimeConst;
+
         return new SequentialAction(
-                new InstantAction(()->slider.updateExtState(Slider.ExtState.MIN)),
-                new SleepAction(1),
-                new InstantAction(()-> arm.updateYawState(Arm.YawState.NEUTRAL)),
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
+                new SleepAction(extTime),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
                 new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP)),
                 new InstantAction(()->slider.updateTurretState(Slider.TurretState.UP)),
-                new SleepAction(1),
-                new InstantAction(()->slider.updateExtState(Slider.ExtState.BUCKET_DROP))
+                new SleepAction(turTime),
+                new InstantAction(()->slider.updateExtState(Slider.ExtState.BUCKET_DROP)),
+                new InstantAction(()-> arm.updateYawState(Arm.YawState.AUTO_SAMPLE_DROP_RIGHT))
         );
     }
 
-    public static Action SampleDropPosYawLeft0Ext(Arm arm, Slider slider){
+    public static Action SampleDropPosYawNeutral(Arm arm, Slider slider, int ExtPos, int TurPos){
+
+        double turTime = (double) Math.abs(TurPos - MotorConst.turretUp)/MotorConst.turretDown * turretTimeConst;
+        double extTime = (double) Math.abs(ExtPos - MotorConst.extMin) /MotorConst.extMax * extTimeConst;
+
         return new SequentialAction(
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
+                new SleepAction(extTime),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
                 new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP)),
                 new InstantAction(()->slider.updateTurretState(Slider.TurretState.UP)),
-                new SleepAction(1),
-                new InstantAction(()-> arm.updateYawState(Arm.YawState.AUTO_SAMPLE_DROP_LEFT)),
-                new InstantAction(()->slider.updateExtState(Slider.ExtState.BUCKET_DROP))
+                new SleepAction(turTime),
+                new InstantAction(()->slider.updateExtState(Slider.ExtState.BUCKET_DROP)),
+                new InstantAction(()-> arm.updateYawState(Arm.YawState.NEUTRAL))
         );
     }
 
-    public static Action SampleDropPosYawLeftMaxExt(Arm arm, Slider slider){
-        return new SequentialAction(
-                new InstantAction(()->slider.updateExtState(Slider.ExtState.MIN)),
-                new SleepAction(1),
-                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
-                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP)),
-                new InstantAction(()->slider.updateTurretState(Slider.TurretState.UP)),
-                new SleepAction(1),
-                new InstantAction(()-> arm.updateYawState(Arm.YawState.AUTO_SAMPLE_DROP_LEFT)),
-                new InstantAction(()->slider.updateExtState(Slider.ExtState.BUCKET_DROP))
-        );
-    }
-
-    public static Action SampleDropPosYawRight0Ext(Arm arm, Slider slider){
-        return new SequentialAction(
-                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
-                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP)),
-                new InstantAction(()->slider.updateTurretState(Slider.TurretState.UP)),
-                new SleepAction(1),
-                new InstantAction(()-> arm.updateYawState(Arm.YawState.AUTO_SAMPLE_DROP_RIGHT)),
-                new InstantAction(()->slider.updateExtState(Slider.ExtState.BUCKET_DROP))
-        );
-    }
-
-    public static Action SampleDropPosYawRight0ExtTurretUp(Arm arm, Slider slider){
-        return new SequentialAction(
-                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
-                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP)),
-                new InstantAction(()-> arm.updateYawState(Arm.YawState.AUTO_SAMPLE_DROP_RIGHT)),
-                new InstantAction(()->slider.updateExtState(Slider.ExtState.BUCKET_DROP))
-        );
-    }
-
-    public static Action SampleDropPosYawRightMaxExt(Arm arm, Slider slider){
-        return new SequentialAction(
-                new InstantAction(()->slider.updateExtState(Slider.ExtState.MIN)),
-                new SleepAction(1),
-                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
-                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP)),
-                new InstantAction(()->slider.updateTurretState(Slider.TurretState.UP)),
-                new SleepAction(1),
-                new InstantAction(()-> arm.updateYawState(Arm.YawState.AUTO_SAMPLE_DROP_RIGHT)),
-                new InstantAction(()->slider.updateExtState(Slider.ExtState.BUCKET_DROP))
-        );
-    }
-
-    public static Action SamplePick(Arm arm, Slider slider){
+    public static Action SamplePick(Arm arm){
         return new SequentialAction(
                 new InstantAction(() -> arm.updateElbowState(Arm.ElbowState.INTAKE)),
                 new InstantAction(() -> arm.updateShoulderState(Arm.ShoulderState.INTAKE)),
@@ -170,7 +152,7 @@ public class FinalAutoSeq {
         );
     }
 
-    public static Action SampleDrop(Arm arm, Slider slider){
+    public static Action SampleDrop(Arm arm){
         return new SequentialAction(
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.BUCKET_DROP)),
                 new SleepAction(0.3),
@@ -178,6 +160,22 @@ public class FinalAutoSeq {
                 new SleepAction(0.4),
                 new InstantAction(()-> arm.updateYawState(Arm.YawState.NEUTRAL)),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP))
+        );
+    }
+
+    public static Action TeleOpInit(Arm arm, Slider slider, int ExtPos){
+
+        double extTime = (double) Math.abs(ExtPos - MotorConst.extMin) /MotorConst.extMax * extTimeConst;
+
+        return new SequentialAction(
+                new InstantAction(()->slider.updateExtState(Slider.ExtState.INIT)),
+                new SleepAction(extTime),
+                new InstantAction(()->slider.updateTurretState(Slider.TurretState.UP)),
+                new InstantAction(()->arm.updateElbowState(Arm.ElbowState.AUTO_INIT)),
+                new InstantAction(()->arm.updateShoulderState(Arm.ShoulderState.AUTO_INIT)),
+                new InstantAction(()->arm.updateYawState(Arm.YawState.AUTO_INIT)),
+                new InstantAction(()->arm.updateGripperState(Arm.GripperState.OPEN)),
+                new InstantAction(()->arm.updateWristState(Arm.WristState.WRIST0))
         );
     }
 }

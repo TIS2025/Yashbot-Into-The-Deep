@@ -3,13 +3,24 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import androidx.annotation.NonNull;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Globals.MotorConst;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 
 public class Slider {
     private final RobotHardware robot;
-    public Slider(RobotHardware  robot){this.robot = robot;}
+
+    public int targetPosition = 0;
+    public double maxPower = 0.8;
+    public boolean isMotionProfileActive = false;
+    public double rampUpDistance;
+    public double rampDownDistance;
+    public int distanceToMove;
+
+    public Slider(RobotHardware  robot){
+        this.robot = robot;
+    }
 
     public enum ExtState{
         MIN,
@@ -31,7 +42,9 @@ public class Slider {
         SPECIMEN_PRE_PICK,
         SPECIMEN_PRE_DROP,
         SPECIMEN_DROP,
-        PRE_HANG
+        PRE_HANG,
+        MOTION_PROFILE1,
+        MOTION_PROFILE2
     }
 
     public ExtState extState = ExtState.INIT;
@@ -121,11 +134,64 @@ public class Slider {
         robot.turret.setPower(MotorConst.turretPower);
     }
 
+    public void setTurretMotionProfile(int targetPosition, double maxPower) {
+        this.targetPosition = Range.clip(targetPosition, MotorConst.turretUp, MotorConst.turretDown);
+        this.maxPower = maxPower;
+
+        int currentPosition = robot.turret.getCurrentPosition();
+        this.distanceToMove = Math.abs(this.targetPosition - currentPosition);
+
+        this.rampUpDistance = distanceToMove * 0.3;
+        this.rampDownDistance = distanceToMove * 0.4;
+
+        robot.turret.setTargetPosition(this.targetPosition);
+        robot.turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        this.isMotionProfileActive = true;
+    }
+
+    public void updateTurretMotionProfile() {
+        if (!isMotionProfileActive) {
+            return;
+        }
+
+        int currentPos = robot.turret.getCurrentPosition();
+        int distanceRemaining = Math.abs(targetPosition - currentPos);
+
+        double power;
+
+        if (distanceRemaining > distanceToMove - rampUpDistance) {
+            double rampUpRatio = (distanceToMove - distanceRemaining) / rampUpDistance;
+            power = maxPower * rampUpRatio;
+        } else if (distanceRemaining < rampDownDistance) {
+            double rampDownRatio = (double) distanceRemaining / rampDownDistance;
+            power = maxPower * rampDownRatio;
+        } else {
+            power = maxPower;
+        }
+
+        robot.turret.setPower(Range.clip(power, 0.1, maxPower));
+
+        if (!robot.turret.isBusy() || Math.abs(robot.turret.getCurrentPosition() - targetPosition) > 20) {
+            robot.turret.setTargetPosition(this.targetPosition);
+            robot.turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.turret.setPower(maxPower);
+        }
+    }
+
     public boolean isExtBusy(){
         return robot.extRight.isBusy();
     }
 
     public boolean isTurretBusy(){
         return robot.turret.isBusy();
+    }
+
+    public int TurretPos(){
+        return robot.turret.getCurrentPosition();
+    }
+
+    public int ExtPos(){
+        return robot.extLeft.getCurrentPosition();
     }
 }

@@ -4,9 +4,11 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.Sequences.FinalAutoSeq;
+import org.firstinspires.ftc.teamcode.Sequences.FinalSeq;
 import org.firstinspires.ftc.teamcode.Sequences.InitSeq;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Hanger;
@@ -32,35 +34,19 @@ public class SliderTest extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()){
             ftc = updateAction();
-            if(gamepad1.a){
-                ftc.add(FinalAutoSeq.SamplePickPosFullExtRightYaw(arm,slider));
-            }
-            if(gamepad1.b){
-                ftc.add(FinalAutoSeq.SamplePickPosNoExtLeftYaw(arm,slider));
-            }
 
-            if(gamepad1.x){
-            }
+
             if(gamepad1.y){
-                slider.setTurret(1250);
-            }
-            if(gamepad1.dpad_down){
-                ftc.add(FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider));
-            }
-            if(gamepad1.dpad_up){
-                ftc.add(FinalAutoSeq.SampleDropPosNoYaw0Ext(arm,slider));
+                ftc.add(FinalAutoSeq.Init(arm,slider));
             }
             if(gamepad1.dpad_right){
-                ftc.add(FinalAutoSeq.SampleDrop(arm,slider));
-            }
-            if(gamepad1.dpad_left){
-                ftc.add(FinalAutoSeq.SamplePick(arm,slider));
+                ftc.add(FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,0));
             }
             if(gamepad1.left_bumper){
-                ftc.add(FinalAutoSeq.SampleDropPosYawLeft0Ext(arm,slider));
+                ftc.add(FinalAutoSeq.SampleDrop(arm));
             }
             if(gamepad1.right_bumper){
-                ftc.add(FinalAutoSeq.SampleDropPosYawRightMaxExt(arm,slider));
+                ftc.add(FinalAutoSeq.SamplePick(arm));
             }
 
             telemetry.addData("Turret Pos",robot.turret.getCurrentPosition());
