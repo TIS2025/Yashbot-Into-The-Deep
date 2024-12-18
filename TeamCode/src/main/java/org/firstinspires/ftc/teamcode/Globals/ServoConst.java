@@ -4,16 +4,16 @@ import com.acmerobotics.dashboard.config.Config;
 
 @Config
 public class ServoConst {
-    public static double gripperInit = 0.8;
-    public static double gripperOpen = 0.8;
-    public static double gripperClose = 0.95;
+    public static double gripperInit = 0.63;
+    public static double gripperOpen = 0.63;
+    public static double gripperClose = 0.33;
 
-    public static double wristInit = 0;
-    public static double wrist0 = 0;
-    public static double wrist90 = 0.5;
-    public static double wrist180 = 1;
-    public static double wristAutoPickRight = 0.3;
-    public static double wristAutoPickLeft = 0.3;
+    public static double wristInit = 0.95;
+    public static double wrist0 = 0.95;
+    public static double wrist90 = 0.45;
+    public static double wrist180 = 0.95;
+    public static double wristAutoPickRight = 0.25;
+    public static double wristAutoPickLeft = 0.25;
 
     public static double elbowInit = 0.5;
     public static double elbowUp = 0.5;

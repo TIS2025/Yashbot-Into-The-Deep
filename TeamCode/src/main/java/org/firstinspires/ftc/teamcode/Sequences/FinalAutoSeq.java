@@ -100,6 +100,7 @@ public class FinalAutoSeq {
                 new InstantAction(()->slider.updateTurretState(Slider.TurretState.UP)),
                 new SleepAction(turTime),
                 new InstantAction(()->slider.updateExtState(Slider.ExtState.BUCKET_DROP)),
+                new SleepAction(1),
                 new InstantAction(()-> arm.updateYawState(Arm.YawState.AUTO_SAMPLE_DROP_LEFT))
         );
     }
@@ -117,6 +118,7 @@ public class FinalAutoSeq {
                 new InstantAction(()->slider.updateTurretState(Slider.TurretState.UP)),
                 new SleepAction(turTime),
                 new InstantAction(()->slider.updateExtState(Slider.ExtState.BUCKET_DROP)),
+                new SleepAction(1),
                 new InstantAction(()-> arm.updateYawState(Arm.YawState.AUTO_SAMPLE_DROP_RIGHT))
         );
     }
@@ -156,6 +158,15 @@ public class FinalAutoSeq {
         return new SequentialAction(
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.BUCKET_DROP)),
                 new SleepAction(0.3),
+                new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
+                new SleepAction(0.4),
+                new InstantAction(()-> arm.updateYawState(Arm.YawState.NEUTRAL)),
+                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP))
+        );
+    }
+
+    public static Action SampleSideDrop(Arm arm){
+        return new SequentialAction(
                 new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
                 new SleepAction(0.4),
                 new InstantAction(()-> arm.updateYawState(Arm.YawState.NEUTRAL)),
