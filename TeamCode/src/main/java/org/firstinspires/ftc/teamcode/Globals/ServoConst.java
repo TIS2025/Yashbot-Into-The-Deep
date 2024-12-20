@@ -40,7 +40,7 @@ public class ServoConst {
     public static double shoulderHome = 1;//0.3;
     public static double shoulderPreIntake = 1;//0.35;
     public static double shoulderAutoPreIntake = 1;//0.35;
-    public static double shoulderIntake = 0.93;//0.45;
+    public static double shoulderIntake = 0.95;//0.45;
     public static double shoulderPostIntake = 1;//0.3;
     public static double shoulderPreBucketDrop = 1;//0.45;
     public static double shoulderBucketDrop = 1;//0.45;

@@ -39,15 +39,15 @@ public class Auto_84 extends LinearOpMode {
     public static double wait5 = 1;
     public static double wait6 = 0.3;
 
-    public static Vector2d sample1drop = new Vector2d(-50,-55);
-    public static Vector2d sample2pick = new Vector2d(11,-57);
-    public static Vector2d sample2drop = new Vector2d(-50,-55);
-    public static Vector2d sample3pick = new Vector2d(-49,-37);
-    public static Vector2d sample3drop = new Vector2d(-59,-48.5);
-    public static Vector2d sample4pick = new Vector2d(-59,-37);
-    public static Vector2d sample4drop = new Vector2d(-57.5,-47);
-    public static Vector2d sample5pick = new Vector2d(-66,-35);
-    public static Vector2d sample5drop = new Vector2d(-57.5,-47);
+    public static Vector2d sample1drop = new Vector2d(-50,-59);
+    public static Vector2d sample2pick = new Vector2d(11,-61);
+    public static Vector2d sample2drop = new Vector2d(-50,-59);
+    public static Vector2d sample3pick = new Vector2d(-49,-44);
+    public static Vector2d sample3drop = new Vector2d(-59,-53.5);
+    public static Vector2d sample4pick = new Vector2d(-59,-44);
+    public static Vector2d sample4drop = new Vector2d(-57.5,-52);
+    public static Vector2d sample5pick = new Vector2d(-66,-42);
+    public static Vector2d sample5drop = new Vector2d(-57.5,-52);
     public static Vector2d park = new Vector2d(-30,0);
 
 
@@ -65,13 +65,66 @@ public class Auto_84 extends LinearOpMode {
         Action autoSequence = drive.actionBuilder(new Pose2d(new Vector2d(-6,-64),-Math.PI/2))
                 //////////////// PRELOAD ////////////////////
                 .afterTime(0.01,AutoSeq.SpecimenDropPos(arm,slider))
-                .strafeToConstantHeading(new Vector2d(0,-32))
+                .strafeToConstantHeading(new Vector2d(-6,-32))
                 .stopAndAdd(AutoSeq.SpecimenDrop(arm,slider))
                 //////////////// FIRST SAMPLE ///////////////
                 .afterTime(0.01,AutoSeq.SamplePickPosFromSpecimenYawLeft(arm,slider))
-                .afterTime(1.7,FinalAutoSeq.SamplePick(arm))
-                .splineToLinearHeading(new Pose2d(new Vector2d(27.5,-32),Math.PI/12),Math.PI/4)
-                .waitSeconds(0.25)
+                .waitSeconds(0.4)
+//                .afterTime(1.7,FinalAutoSeq.SamplePick(arm))
+//                .splineToLinearHeading(new Pose2d(new Vector2d(18,-58),-Math.PI/6),0)
+                .strafeToLinearHeading(new Vector2d(13,-60),-Math.PI/6)
+                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
+                .waitSeconds(0.3)
+                .afterTime(0.5,FinalAutoSeq.SampleDropPosYawRight(arm,slider,MotorConst.extHorizontalMax,MotorConst.turretDown))
+                .strafeToLinearHeading(new Vector2d(-48,-64),0)
+                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
+                //////////////// SECOND SAMPLE ////////////////
+                .waitSeconds(wait2)
+                .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,MotorConst.extHighBucketDrop))
+                //TODO WAIT ADJUST
+                .waitSeconds(wait3)
+                .strafeToLinearHeading(sample3pick,Math.PI/2 + Math.toRadians(4))
+                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
+                //TODO WAIT ADJUST
+                .waitSeconds(wait4)
+                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawLeft(arm,slider,MotorConst.extMin,MotorConst.turretDown))
+                .strafeToConstantHeading(sample3drop)
+                //TODO WAIT ADJUST
+                .waitSeconds(wait5)
+                .stopAndAdd(FinalAutoSeq.SampleSideDrop(arm))
+                //TODO WAIT ADJUST
+                .waitSeconds(wait2)
+                .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,MotorConst.extHighBucketDrop))
+//                //TODO WAIT ADJUST
+                .waitSeconds(wait3)
+                .strafeToLinearHeading(sample4pick,Math.PI/2 + Math.toRadians(4))
+////                //////////////////////// FOURTH ELEMENT /////////////////////
+                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
+                //TODO WAIT ADJUST
+                .waitSeconds(wait4)
+                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawLeft(arm,slider,MotorConst.extMin,MotorConst.turretDown))
+                .strafeToConstantHeading(sample4drop)
+                //TODO WAIT ADJUST
+                .waitSeconds(wait5)
+                .stopAndAdd(FinalAutoSeq.SampleSideDrop(arm))
+                //TODO WAIT ADJUST
+                .waitSeconds(wait6)
+                .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtLeftYaw(arm,slider,MotorConst.extHighBucketDrop))
+//                //TODO WAIT ADJUST
+                .waitSeconds(wait3)
+                .strafeToLinearHeading(sample5pick,Math.PI/2 + Math.toRadians(3))
+////                //////////////////////// FIFTH ELEMENT //////////////////////
+                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
+//                //TODO WAIT ADJUST
+                .waitSeconds(wait4)
+                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawLeft(arm,slider,MotorConst.extMin,MotorConst.turretDown))
+                .strafeToConstantHeading(sample5drop)
+//                //TODO WAIT ADJUST
+                .waitSeconds(wait5)
+                .stopAndAdd(FinalAutoSeq.SampleSideDrop(arm))
+//                //TODO WAIT ADJUST
+                .waitSeconds(wait6)
+                .afterTime(0.01,FinalAutoSeq.TeleOpInit(arm,slider,MotorConst.extHighBucketDrop))
 
 //                .strafeToConstantHeading(park,baseConst)
                 .build();
