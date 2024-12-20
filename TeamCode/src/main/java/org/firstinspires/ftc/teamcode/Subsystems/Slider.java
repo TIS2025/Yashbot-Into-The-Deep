@@ -25,7 +25,7 @@ public class Slider {
     public enum ExtState{
         MIN,
         MAX,
-        MID,
+        HORIZONTAL_MAX,
         INIT,
         BUCKET_DROP,
         SPECIMEN_PRE_PICK,
@@ -58,7 +58,7 @@ public class Slider {
             case MIN:
                 setExt(MotorConst.extMin);
                 break;
-            case MID:
+            case HORIZONTAL_MAX:
                 setExt(MotorConst.extHorizontalMax);
                 break;
             case MAX:

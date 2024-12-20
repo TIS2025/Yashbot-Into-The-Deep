@@ -37,7 +37,7 @@ public class FinalAutoSeq {
                 new ParallelAction(
                         new InstantAction(()->slider.updateExtState(Slider.ExtState.MIN)),
                         new InstantAction(()->arm.updateElbowState(Arm.ElbowState.PRE_INTAKE)),
-                        new InstantAction(()->arm.updateShoulderState(Arm.ShoulderState.PRE_INTAKE)),
+                        new InstantAction(()->arm.updateShoulderState(Arm.ShoulderState.AUTO_PRE_INTAKE)),
                         new InstantAction(()->arm.updateYawState(Arm.YawState.NEUTRAL)),
                         new InstantAction(()->arm.updateGripperState(Arm.GripperState.OPEN)),
                         new InstantAction(()->arm.updateWristState(Arm.WristState.WRIST0))
@@ -55,12 +55,13 @@ public class FinalAutoSeq {
                 new ParallelAction(
                         new InstantAction(()->slider.updateExtState(Slider.ExtState.MIN)),
                         new InstantAction(()->arm.updateElbowState(Arm.ElbowState.PRE_INTAKE)),
-                        new InstantAction(()->arm.updateShoulderState(Arm.ShoulderState.PRE_INTAKE)),
+                        new InstantAction(()->arm.updateShoulderState(Arm.ShoulderState.AUTO_PRE_INTAKE)),
                         new InstantAction(()->arm.updateGripperState(Arm.GripperState.OPEN)),
                         new InstantAction(()->arm.updateWristState(Arm.WristState.AUTO_PICK_LEFT))
                 ),
                 new SleepAction(extTime),
                 new InstantAction(()->slider.updateTurretState(Slider.TurretState.DOWN)),
+                new SleepAction(0.4),
                 new InstantAction(()->arm.updateYawState(Arm.YawState.AUTO_PICK_LEFT))
         );
     }
@@ -74,7 +75,7 @@ public class FinalAutoSeq {
                 new ParallelAction(
                         new InstantAction(()->slider.updateExtState(Slider.ExtState.MIN)),
                         new InstantAction(()->arm.updateElbowState(Arm.ElbowState.PRE_INTAKE)),
-                        new InstantAction(()->arm.updateShoulderState(Arm.ShoulderState.PRE_INTAKE)),
+                        new InstantAction(()->arm.updateShoulderState(Arm.ShoulderState.AUTO_PRE_INTAKE)),
                         new InstantAction(()->arm.updateYawState(Arm.YawState.NEUTRAL)),
                         new InstantAction(()->arm.updateGripperState(Arm.GripperState.OPEN)),
                         new InstantAction(()->arm.updateWristState(Arm.WristState.AUTO_PICK_RIGHT))
@@ -83,7 +84,7 @@ public class FinalAutoSeq {
                 new InstantAction(()->slider.updateTurretState(Slider.TurretState.DOWN)),
                 new InstantAction(()->arm.updateYawState(Arm.YawState.AUTO_PICK_RIGHT)),
                 new SleepAction(turTime),
-                new InstantAction(()->slider.updateExtState(Slider.ExtState.MID))
+                new InstantAction(()->slider.updateExtState(Slider.ExtState.HORIZONTAL_MAX))
         );
     }
 

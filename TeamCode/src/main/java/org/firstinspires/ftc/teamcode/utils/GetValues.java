@@ -22,7 +22,7 @@ public class GetValues extends LinearOpMode {
 
         double elbowPos = 0.5;
         double shoulderPos = 0.5;
-        double yawPos = 0.825;
+        double yawPos = 0.44;
         double wristPos = 0.5;
         double gripperPos = 0.8;
         int extPos = 100;
@@ -50,8 +50,8 @@ public class GetValues extends LinearOpMode {
             if(C.a && !P.a) shoulderPos+=0.05;
             if(C.y && !P.y) shoulderPos-=0.05;
 
-            if(C.x && !P.x) yawPos+=0.05;
-            if(C.b && !P.b) yawPos-=0.05;
+            if(C.x && !P.x) yawPos+=0.005;
+            if(C.b && !P.b) yawPos-=0.005;
 
             if(C.dpad_up && !P.dpad_up) elbowPos+=0.005;
             if(C.dpad_down && !P.dpad_down) elbowPos-=0.005;

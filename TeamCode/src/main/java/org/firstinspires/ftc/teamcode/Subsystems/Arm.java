@@ -20,7 +20,9 @@ public class Arm {
         INIT,
         WRIST180,
         AUTO_PICK_LEFT,
-        AUTO_PICK_RIGHT
+        AUTO_PICK_LEFT2,
+        AUTO_PICK_RIGHT,
+        SPECIMEN_PRE_PICK
     }
     public enum ElbowState{
         INIT,
@@ -54,7 +56,8 @@ public class Arm {
         SPECIMEN_PICK,
         SPECIMEN_PRE_DROP,
         SPECIMEN_DROP,
-        PRE_HANG
+        PRE_HANG,
+        AUTO_PRE_INTAKE
     }
     public enum YawState{
         INIT,
@@ -67,6 +70,7 @@ public class Arm {
         AUTO_SAMPLE_DROP_RIGHT,
         AUTO_SAMPLE_DROP_LEFT,
         AUTO_PICK_LEFT,
+        AUTO_PICK_LEFT2,
         SPECIMEN_PRE_PICK,
         SPECIMEN_PRE_DROP,
         PRE_HANG
@@ -112,6 +116,12 @@ public class Arm {
                 break;
             case AUTO_PICK_LEFT:
                 setWrist(ServoConst.wristAutoPickLeft);
+                break;
+            case SPECIMEN_PRE_PICK:
+                setWrist(ServoConst.wristSpecimenPrePick);
+                break;
+            case AUTO_PICK_LEFT2:
+                setWrist(ServoConst.wristAutoPickLeft2);
                 break;
         }
         wristState = state;
@@ -215,6 +225,9 @@ public class Arm {
             case PRE_HANG:
                 setShoulder(ServoConst.shoulderPreHang);
                 break;
+            case AUTO_PRE_INTAKE:
+                setShoulder(ServoConst.shoulderAutoPreIntake);
+                break;
         }
         shoulderState = state;
     }
@@ -259,6 +272,9 @@ public class Arm {
                 break;
             case PRE_HANG:
                 setYaw(ServoConst.yawPreHang);
+                break;
+            case AUTO_PICK_LEFT2:
+                setYaw(ServoConst.yawAutoPickLeft2);
                 break;
         }
         yawState = state;

@@ -190,11 +190,11 @@ public class TeleOp_Aadhaar extends LinearOpMode {
                 sampleState = SampleState.HOME_POS;
             }
 
-            if(C1.right_bumper && !P1.right_bumper && intakeState == BotState.SPECIMEN_MODE && specimenState == SpecimenState.DROP_POS){
+            if(C1.y && !P1.y && intakeState == BotState.SPECIMEN_MODE && specimenState == SpecimenState.DROP_POS){
                 ftc.add(FinalSeq.SpecimenDrop(arm,slider));
                 specimenState = SpecimenState.PICK_POS;
             }
-            if(C1.left_bumper && !P1.left_bumper && intakeState == BotState.SPECIMEN_MODE && specimenState == SpecimenState.PICK_POS) {
+            if(C1.x && !P1.x && intakeState == BotState.SPECIMEN_MODE && specimenState == SpecimenState.PICK_POS) {
                 ftc.add(FinalSeq.SpecimenPick(arm,slider));
                 specimenState = SpecimenState.DROP_POS;
             }

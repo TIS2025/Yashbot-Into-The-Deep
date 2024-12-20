@@ -41,7 +41,7 @@ public class Auto_Specimen extends LinearOpMode {
         robot.reset_encoders();
 
 
-        Action autoSequence = drive.actionBuilder(new Pose2d(new Vector2d(4,-64),-Math.PI/2))
+        Action autoSequence = drive.actionBuilder(new Pose2d(new Vector2d(6,-64),-Math.PI/2))
                 //PRELOAD SPECIMEN DROP
                 .afterTime(0.01,AutoSeq.SpecimenDropPos(arm,slider))
                 .strafeToConstantHeading(new Vector2d(1,-32))
@@ -52,21 +52,21 @@ public class Auto_Specimen extends LinearOpMode {
                 .splineToLinearHeading(new Pose2d(new Vector2d(27.5,-32),Math.PI/12),Math.PI/4)
                 .waitSeconds(0.25)
                 .afterTime(0.7,AutoSeq.SampleDropObsZone(arm,slider))
-                .strafeToLinearHeading(new Vector2d(32,-43), -Math.PI/4)
+                .strafeToLinearHeading(new Vector2d(32,-45), -Math.PI/4)
                 //SAMPLE 2 TO OBS
                 .afterTime(0.01,AutoSeq.SamplePickPosFromObs(arm,slider))
                 .afterTime(0.85,AutoSeq.SamplePickForSpecimen(arm,slider))
-                .strafeToLinearHeading(new Vector2d(38.5,-34),Math.PI/12)
+                .strafeToLinearHeading(new Vector2d(38.5,-32),Math.PI/12)
                 .waitSeconds(0.25)
                 .afterTime(0.75,AutoSeq.SampleDropObsZone(arm,slider))
-                .strafeToLinearHeading(new Vector2d(38,-44), -Math.PI/4)
+                .strafeToLinearHeading(new Vector2d(38,-45), -Math.PI/4)
                 //SAMPLE 3 TO OBS
                 .afterTime(0.01,AutoSeq.SamplePickPosFromObs(arm,slider))
                 .afterTime(0.85,AutoSeq.SamplePickForSpecimen(arm,slider))
-                .strafeToLinearHeading(new Vector2d(48.5,-33),Math.PI/12)
+                .strafeToLinearHeading(new Vector2d(48.5,-31),Math.PI/12)
                 .waitSeconds(0.25)
                 .afterTime(0.65,AutoSeq.SampleDropObsZone(arm,slider))
-                .strafeToLinearHeading(new Vector2d(42,-44), -Math.PI/4)
+                .strafeToLinearHeading(new Vector2d(42,-45), -Math.PI/4)
                 //FIRST SPECIMEN DROP
                 .afterTime(0.01,AutoSeq.SpecimenPickPosFromSampleDrop(arm,slider))
                 .waitSeconds(0.45)
