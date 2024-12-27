@@ -51,8 +51,6 @@ public class FinalSeq {
 
     public static Action SampleDropPos(Arm arm, Slider slider){
         return new SequentialAction(
-                new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
-                new SleepAction(0.2),
                 new InstantAction(()-> slider.updateTurretState(Slider.TurretState.UP)),
                 new SleepAction(0.7),
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.BUCKET_DROP)),

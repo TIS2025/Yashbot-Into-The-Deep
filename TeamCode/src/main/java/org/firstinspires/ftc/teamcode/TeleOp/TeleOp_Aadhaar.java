@@ -153,13 +153,13 @@ public class TeleOp_Aadhaar extends LinearOpMode {
                 HANGER_FLAG1 = true;
             }
 
-            if(C2.dpad_left && !P2.dpad_left && specimenState == SpecimenState.PICK_POS){
+            if(C2.x && !P2.x && specimenState == SpecimenState.PICK_POS){
                 intakeState = BotState.SAMPLE_MODE;
                 sampleState = SampleState.HOME_POS;
                 ftc.add(FinalSeq.HomePos(arm,slider));
             }
 
-            if(C2.dpad_right && !P2.dpad_right && sampleState == SampleState.HOME_POS){
+            if(C2.b && !P2.b && sampleState == SampleState.HOME_POS){
                 specimenState = SpecimenState.PICK_POS;
                 intakeState = BotState.SPECIMEN_MODE;
                 ftc.add(FinalSeq.SpecimenPickPos(arm,slider));
@@ -183,6 +183,8 @@ public class TeleOp_Aadhaar extends LinearOpMode {
             if(C2.dpad_up && !P2.dpad_up && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK){
                 ftc.add(FinalSeq.SampleDropPos(arm,slider));
                 sampleState = SampleState.DROP_POS;
+                slider_pos = 0;
+                wrist_rotate = true;
             }
 
             if(C1.b && !P1.b && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.DROP_POS){

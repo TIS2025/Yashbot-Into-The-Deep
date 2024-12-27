@@ -170,6 +170,8 @@ public class TeleOp_Educo extends LinearOpMode {
             if(C1.x && !P1.x && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
                 ftc.add(FinalSeq.SamplePick(arm,slider));
                 sampleState = SampleState.PICK;
+                wrist_rotate = true;
+                slider_pos = 0;
             }
 
             if(C1.left_bumper && !P1.left_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK){

@@ -181,13 +181,13 @@ public class FinalAutoSeq {
 
         return new SequentialAction(
                 new InstantAction(()->slider.updateExtState(Slider.ExtState.INIT)),
-                new SleepAction(extTime),
-                new InstantAction(()->slider.updateTurretState(Slider.TurretState.UP)),
                 new InstantAction(()->arm.updateElbowState(Arm.ElbowState.AUTO_INIT)),
                 new InstantAction(()->arm.updateShoulderState(Arm.ShoulderState.AUTO_INIT)),
                 new InstantAction(()->arm.updateYawState(Arm.YawState.AUTO_INIT)),
                 new InstantAction(()->arm.updateGripperState(Arm.GripperState.OPEN)),
-                new InstantAction(()->arm.updateWristState(Arm.WristState.WRIST0))
+                new InstantAction(()->arm.updateWristState(Arm.WristState.WRIST0)),
+                new SleepAction(extTime),
+                new InstantAction(()->slider.updateTurretState(Slider.TurretState.UP))
         );
     }
 }
