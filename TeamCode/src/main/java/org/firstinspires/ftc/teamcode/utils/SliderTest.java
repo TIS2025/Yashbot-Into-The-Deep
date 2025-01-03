@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.utils;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
@@ -17,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 import java.util.ArrayList;
 import java.util.List;
 
+@Disabled
 @TeleOp(name = "Slider Extension Test")
 public class SliderTest extends LinearOpMode {
     static List<Action> ftc = new ArrayList<>();

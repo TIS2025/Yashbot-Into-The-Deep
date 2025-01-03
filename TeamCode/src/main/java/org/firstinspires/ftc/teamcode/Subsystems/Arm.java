@@ -57,7 +57,8 @@ public class Arm {
         SPECIMEN_PRE_DROP,
         SPECIMEN_DROP,
         PRE_HANG,
-        AUTO_PRE_INTAKE
+        AUTO_PRE_INTAKE,
+        AUTO_SPECIMEN_INIT
     }
     public enum YawState{
         INIT,
@@ -227,6 +228,9 @@ public class Arm {
                 break;
             case AUTO_PRE_INTAKE:
                 setShoulder(ServoConst.shoulderAutoPreIntake);
+                break;
+            case AUTO_SPECIMEN_INIT:
+                setShoulder(ServoConst.shoulderSpecimenAutoInit);
                 break;
         }
         shoulderState = state;

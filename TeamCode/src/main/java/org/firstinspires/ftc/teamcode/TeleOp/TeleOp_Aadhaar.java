@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(group = "TeleOp", name = "TeleOp Basic Aadhaar")
+@TeleOp(group = "AATeleOp", name = "TeleOp Basic Aadhaar")
 public class TeleOp_Aadhaar extends LinearOpMode {
     static List<Action> ftc = new ArrayList<>();
     MecanumDrive drive;

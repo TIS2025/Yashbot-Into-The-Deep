@@ -8,25 +8,35 @@ import com.acmerobotics.roadrunner.SleepAction;
 import com.sun.tools.javac.util.SharedNameTable;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorKLNavxMicro;
+import org.firstinspires.ftc.teamcode.Globals.MotorConst;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Hanger;
 import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 
 public class FinalSeq {
+
+    public static double turretTimeConst = 0.55;
+    public static double extTimeConst = 1.3;
+
     public static Action HomePos(Arm arm, Slider slider) {
+
+        double extTime = (double) Math.abs(slider.ExtPos() - MotorConst.extMin) /MotorConst.extMax * extTimeConst;
+
         return new SequentialAction(
                 new InstantAction(() -> slider.updateExtState(Slider.ExtState.MIN)),
                 new InstantAction(() -> arm.updateShoulderState(Arm.ShoulderState.HOME)),
+//                new SleepAction(0.3),
                 new InstantAction(() -> arm.updateYawState(Arm.YawState.HOME)),
                 new InstantAction(() -> arm.updateElbowState(Arm.ElbowState.HOME)),
                 new InstantAction(() -> arm.updateWristState(Arm.WristState.WRIST0)),
                 new InstantAction(() -> arm.updateGripperState(Arm.GripperState.CLOSE)),
-                new SleepAction(0.3),
+                new SleepAction(extTime),
                 new InstantAction(() -> slider.updateTurretState(Slider.TurretState.DOWN))
         );
     }
 
     public static Action SamplePickPos(Arm arm){
+
         return new SequentialAction(
                 new InstantAction(() -> arm.updateYawState(Arm.YawState.NEUTRAL)),
                 new SleepAction(0.2),
@@ -50,18 +60,28 @@ public class FinalSeq {
     }
 
     public static Action SampleDropPos(Arm arm, Slider slider){
+
+        double extTime = (double) Math.abs(slider.ExtPos() - MotorConst.extMin) /MotorConst.extMax * extTimeConst;
+        double turTime = (double) Math.abs(slider.TurretPos() - MotorConst.turretUp)/MotorConst.turretDown * turretTimeConst;
+
         return new SequentialAction(
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
+                new SleepAction(extTime),
                 new InstantAction(()-> slider.updateTurretState(Slider.TurretState.UP)),
-                new SleepAction(0.7),
+                new SleepAction(turTime),
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.BUCKET_DROP)),
                 new SleepAction(0.2),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
+                new InstantAction(()-> arm.updateWristState(Arm.WristState.WRIST0)),
                 new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP))
         );
     }
 
 
     public static Action SampleDrop(Arm arm, Slider slider){
+
+        double extTime = (double) Math.abs(slider.ExtPos() - MotorConst.extMin) /MotorConst.extMax * extTimeConst;
+
         return new SequentialAction(
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.BUCKET_DROP)),
                 new SleepAction(0.3),
@@ -69,15 +89,38 @@ public class FinalSeq {
                 new SleepAction(0.3),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
-                new SleepAction(0.7),
-                HomePos(arm,slider)
+                new SleepAction(extTime),
+                new InstantAction(() -> arm.updateShoulderState(Arm.ShoulderState.HOME)),
+                new InstantAction(() -> arm.updateYawState(Arm.YawState.HOME)),
+                new InstantAction(() -> arm.updateElbowState(Arm.ElbowState.HOME)),
+                new InstantAction(() -> arm.updateWristState(Arm.WristState.WRIST0)),
+                new InstantAction(() -> arm.updateGripperState(Arm.GripperState.CLOSE)),
+                new InstantAction(() -> slider.updateTurretState(Slider.TurretState.DOWN))
+        );
+    }
+
+    public static Action SampleDropObsZone(Arm arm, Slider slider){
+
+        double extTime = (double) Math.abs(slider.ExtPos() - MotorConst.extHorizontalMax) /MotorConst.extMax * extTimeConst;
+
+        return new SequentialAction(
+                new InstantAction(()-> slider.updateExtState(Slider.ExtState.HORIZONTAL_MAX)),
+                new InstantAction(() -> arm.updateShoulderState(Arm.ShoulderState.PRE_INTAKE)),
+                new InstantAction(() -> arm.updateElbowState(Arm.ElbowState.PRE_INTAKE)),
+                new InstantAction(() -> arm.updateWristState(Arm.WristState.WRIST0)),
+                new SleepAction(extTime),
+                new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
+                new SleepAction(0.1)
         );
     }
 
     public static Action SpecimenPickPos(Arm arm, Slider slider){
+
+        double extTime = (double) Math.abs(slider.ExtPos() - MotorConst.extSpecimenPrePick) /MotorConst.extMax * extTimeConst;
+
         return new SequentialAction(
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_PRE_PICK)),
-                new SleepAction(0.5),
+                new SleepAction(extTime),
                 new InstantAction(()-> slider.updateTurretState(Slider.TurretState.SPECIMEN_PRE_PICK)),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_PICK)),
                 new InstantAction(()-> arm.updateWristState(Arm.WristState.SPECIMEN_PRE_PICK)),
@@ -88,13 +131,16 @@ public class FinalSeq {
     }
 
     public static Action SpecimenPick(Arm arm, Slider slider){
+
+        double turTime = (double) Math.abs(slider.TurretPos() - MotorConst.turretSpecimenPreDrop)/MotorConst.turretDown * turretTimeConst;
+
         return new SequentialAction(
                 new InstantAction(()-> arm.updateGripperState(Arm.GripperState.CLOSE)),
                 new SleepAction(0.15),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PICK)),
                 new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PICK)),
                 new InstantAction(()-> slider.updateTurretState(Slider.TurretState.SPECIMEN_PRE_DROP)),
-                new SleepAction(0.2),
+                new SleepAction(turTime),
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_PRE_DROP)),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_DROP)),
                 new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PRE_DROP)),
@@ -107,7 +153,7 @@ public class FinalSeq {
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_DROP)),
                 new SleepAction(0.45),
                 new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
-                new SleepAction(0.2),
+                new SleepAction(0.15),
                 SpecimenPickPos(arm,slider)
         );
     }

@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
-import android.net.wifi.aware.WifiAwareNetworkInfo;
-
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.MinVelConstraint;
@@ -25,8 +23,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 import java.util.Arrays;
 
 @Config
-@Autonomous(group = "Auto", name = "Auto 84")
-public class Auto_84 extends LinearOpMode {
+@Autonomous(group = "Auto", name = "Auto Sample 1 + 4")
+public class Auto_Sample_84 extends LinearOpMode {
 
     MecanumDrive drive;
 
@@ -125,41 +123,40 @@ public class Auto_84 extends LinearOpMode {
 //                //TODO WAIT ADJUST
                 .waitSeconds(wait6)
                 .afterTime(0.01,FinalAutoSeq.TeleOpInit(arm,slider,MotorConst.extHighBucketDrop))
-
-//                .strafeToConstantHeading(park,baseConst)
+                .strafeToConstantHeading(park,baseConst)
                 .build();
 
-        Action testSeq = drive.actionBuilder(new Pose2d(new Vector2d(-40,-60),0))
-                .stopAndAdd(FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extInit,MotorConst.turretInit))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SamplePickPosFullExtRightYaw(arm,slider,MotorConst.extHighBucketDrop,MotorConst.turretUp))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extHorizontalMax,MotorConst.turretDown))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,MotorConst.extHighBucketDrop))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extMin,MotorConst.turretDown))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SamplePickPosNoExtLeftYaw(arm,slider,MotorConst.extHighBucketDrop))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extHorizontalMax,MotorConst.turretDown))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
-                .waitSeconds(2)
-                .stopAndAdd(FinalAutoSeq.TeleOpInit(arm,slider,MotorConst.extHighBucketDrop))
-                .build();
+//        Action testSeq = drive.actionBuilder(new Pose2d(new Vector2d(-40,-60),0))
+//                .stopAndAdd(FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extInit,MotorConst.turretInit))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SamplePickPosFullExtRightYaw(arm,slider,MotorConst.extHighBucketDrop,MotorConst.turretUp))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extHorizontalMax,MotorConst.turretDown))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,MotorConst.extHighBucketDrop))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extMin,MotorConst.turretDown))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SamplePickPosNoExtLeftYaw(arm,slider,MotorConst.extHighBucketDrop))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SamplePick(arm))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extHorizontalMax,MotorConst.turretDown))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
+//                .waitSeconds(2)
+//                .stopAndAdd(FinalAutoSeq.TeleOpInit(arm,slider,MotorConst.extHighBucketDrop))
+//                .build();
 
         if(opModeInInit()) {
             Actions.runBlocking(AutoSeq.SpecimenInit(arm, slider));

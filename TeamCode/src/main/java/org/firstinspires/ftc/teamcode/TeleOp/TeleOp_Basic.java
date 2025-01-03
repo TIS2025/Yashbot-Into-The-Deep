@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -25,6 +26,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 import java.util.ArrayList;
 import java.util.List;
 
+@Disabled
 @TeleOp(group = "TeleOp", name = "Basic TeleOp")
 public class TeleOp_Basic extends LinearOpMode {
     static List<Action> ftc = new ArrayList<>();

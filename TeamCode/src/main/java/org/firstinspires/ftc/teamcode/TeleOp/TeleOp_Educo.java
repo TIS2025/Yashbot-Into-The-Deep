@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(group = "TeleOp", name = "Basic TeleOp Educo")
+@TeleOp(group = "AATeleOp", name = "Basic TeleOp Educo")
 public class TeleOp_Educo extends LinearOpMode {
     static List<Action> ftc = new ArrayList<>();
     MecanumDrive drive;
@@ -194,12 +194,12 @@ public class TeleOp_Educo extends LinearOpMode {
             }
 
             if(C2.left_bumper && !P2.left_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
-                slider_pos+=400;
+                slider_pos+=600;
                 slider_pos = Math.min(slider_pos,1200);
                 slider.setExt(slider_pos);
             }
             if(C2.right_bumper && !P2.right_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
-                slider_pos-=400;
+                slider_pos-=600;
                 slider_pos = Math.max(slider_pos,0);
                 slider.setExt(slider_pos);
             }
@@ -220,6 +220,8 @@ public class TeleOp_Educo extends LinearOpMode {
             telemetry.addData("Ext right Pos",robot.extRight.getCurrentPosition());
             telemetry.addData("Hanger Pos",robot.hanger.getCurrentPosition());
             telemetry.addData("Drive State",driveState);
+            telemetry.addData("Bot State",intakeState);
+            telemetry.addData("Gripper State",arm.gripperState);
             telemetry.addData("Drive Current FL",drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));
             telemetry.addData("Drive Current FR",drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));
             telemetry.addData("Drive Current BL",drive.leftBack.getCurrent(CurrentUnit.MILLIAMPS));

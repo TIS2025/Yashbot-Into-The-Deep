@@ -29,7 +29,7 @@ public class AutoSeq {
                 new InstantAction(()-> slider.updateTurretState(Slider.TurretState.UP)),
                 new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_PICK)),
-                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PRE_PICK)),
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.AUTO_SPECIMEN_INIT)),
                 new InstantAction(()-> arm.updateWristState(Arm.WristState.WRIST0)),
                 new InstantAction(()-> arm.updateYawState(Arm.YawState.SPECIMEN_PRE_PICK)),
                 new SleepAction(2),
