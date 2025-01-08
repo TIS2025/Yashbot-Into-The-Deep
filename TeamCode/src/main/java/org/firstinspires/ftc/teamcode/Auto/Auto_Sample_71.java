@@ -35,11 +35,11 @@ public class Auto_Sample_71 extends LinearOpMode {
     public static double wait6 = 0.3;
 
     public static Vector2d sample1pick = new Vector2d(-49,-44);
-    public static Vector2d sample1drop = new Vector2d(-59,-52);
+    public static Vector2d sample1drop = new Vector2d(-60.5,-52);
     public static Vector2d sample2pick = new Vector2d(-59,-44);
-    public static Vector2d sample2drop = new Vector2d(-57.5,-52);
+    public static Vector2d sample2drop = new Vector2d(-60,-52);
     public static Vector2d sample3pick = new Vector2d(-66,-42);
-    public static Vector2d sample3drop = new Vector2d(-57.5,-52);
+    public static Vector2d sample3drop = new Vector2d(-60,-52);
     public static Vector2d park = new Vector2d(-30,0);
 
 
@@ -55,13 +55,14 @@ public class Auto_Sample_71 extends LinearOpMode {
         robot.reset_encoders();
 
         Action autoSequence = drive.actionBuilder(new Pose2d(new Vector2d(-6,-64),-Math.PI/2))
+                .waitSeconds(2)
                 //////////////// PRELOAD ////////////////////
-                .afterTime(0.01,AutoSeq.SpecimenDropPos(arm,slider))
-                .strafeToConstantHeading(new Vector2d(-6,-32))
-                .stopAndAdd(AutoSeq.SpecimenDrop(arm,slider))
+//                .afterTime(0.01,AutoSeq.SpecimenDropPos(arm,slider))
+//                .strafeToConstantHeading(new Vector2d(-6,-32))
+//                .stopAndAdd(AutoSeq.SpecimenDrop(arm,slider))
                 //////////////// FIRST SAMPLE ////////////////
                 .waitSeconds(wait2)
-                .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,MotorConst.extSpecimenDrop))
+                .afterTime(1,FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,MotorConst.extSpecimenDrop))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait3)
                 .strafeToLinearHeading(sample1pick,Math.PI/2 + Math.toRadians(4))

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.utils;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.Sequences.InitSeq;
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Hanger;
 import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 
-@TeleOp(name = "Get Values")
+@TeleOp(group = "Utils", name = "Get Values")
 public class GetValues extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -22,12 +23,12 @@ public class GetValues extends LinearOpMode {
 
         double elbowPos = 0.5;
         double shoulderPos = 0.5;
-        double yawPos = 0.44;
+        double yawPos = 0.5;
         double wristPos = 0.5;
-        double gripperPos = 0.8;
-        int extPos = 100;
-        int hangerPos = 100;
-        int turretPos = 100;
+        double gripperPos = 0.5;
+        int extPos = 0;
+        int hangerPos = 0;
+        int turretPos = 0;
 
 
         Gamepad C = new Gamepad();
@@ -47,8 +48,8 @@ public class GetValues extends LinearOpMode {
             P2.copy(C2);
             C2.copy(gamepad2);
 
-            if(C.a && !P.a) shoulderPos+=0.05;
-            if(C.y && !P.y) shoulderPos-=0.05;
+            if(C.a && !P.a) shoulderPos+=0.005;
+            if(C.y && !P.y) shoulderPos-=0.005;
 
             if(C.x && !P.x) yawPos+=0.005;
             if(C.b && !P.b) yawPos-=0.005;
@@ -56,8 +57,8 @@ public class GetValues extends LinearOpMode {
             if(C.dpad_up && !P.dpad_up) elbowPos+=0.005;
             if(C.dpad_down && !P.dpad_down) elbowPos-=0.005;
 
-            if(C.dpad_left && !P.dpad_left) wristPos+=0.05;
-            if(C.dpad_right && !P.dpad_right) wristPos-=0.05;
+            if(C.dpad_left && !P.dpad_left) wristPos+=0.01;
+            if(C.dpad_right && !P.dpad_right) wristPos-=0.01;
 
             if(C.left_stick_y>0.75) hangerPos+=5;
             if(C.left_stick_y<-0.75) hangerPos-=5;
@@ -86,7 +87,12 @@ public class GetValues extends LinearOpMode {
             }
 
             turretPos = Math.max(turretPos,0);
-            extPos = Math.max(extPos,-300);
+            extPos = Math.max(extPos,0);
+            shoulderPos = Range.clip(shoulderPos,0,1);
+            wristPos = Range.clip(wristPos,0,1);
+            yawPos = Range.clip(yawPos,0,1);
+            elbowPos = Range.clip(elbowPos,0,1);
+            gripperPos = Range.clip(gripperPos,0,1);
 
             arm.setShoulder(shoulderPos);
             arm.setYaw(yawPos);

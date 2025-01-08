@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Sequences;
 
+import static org.firstinspires.ftc.teamcode.Globals.MotorConst.extTimeConst;
+import static org.firstinspires.ftc.teamcode.Globals.MotorConst.turretTimeConst;
+
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.ParallelAction;
@@ -15,8 +18,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 
 public class FinalSeq {
 
-    public static double turretTimeConst = 0.55;
-    public static double extTimeConst = 1.3;
+
 
     public static Action HomePos(Arm arm, Slider slider) {
 
@@ -120,13 +122,13 @@ public class FinalSeq {
 
         return new SequentialAction(
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_PRE_PICK)),
-                new SleepAction(extTime),
-                new InstantAction(()-> slider.updateTurretState(Slider.TurretState.SPECIMEN_PRE_PICK)),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_PICK)),
                 new InstantAction(()-> arm.updateWristState(Arm.WristState.SPECIMEN_PRE_PICK)),
                 new InstantAction(()-> arm.updateYawState(Arm.YawState.SPECIMEN_PRE_PICK)),
                 new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
-                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PRE_PICK))
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PRE_PICK)),
+                new SleepAction(extTime + 0.1),
+                new InstantAction(()-> slider.updateTurretState(Slider.TurretState.SPECIMEN_PRE_PICK))
         );
     }
 
@@ -144,7 +146,8 @@ public class FinalSeq {
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_PRE_DROP)),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_DROP)),
                 new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PRE_DROP)),
-                new InstantAction(()-> arm.updateYawState(Arm.YawState.SPECIMEN_PRE_DROP))
+                new InstantAction(()-> arm.updateYawState(Arm.YawState.SPECIMEN_PRE_DROP)),
+                new InstantAction(()-> arm.updateWristState(Arm.WristState.WRIST0))
         );
     }
 

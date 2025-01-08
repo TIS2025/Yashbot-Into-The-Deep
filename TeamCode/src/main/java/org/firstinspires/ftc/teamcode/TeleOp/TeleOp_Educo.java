@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Slider;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(group = "AATeleOp", name = "Basic TeleOp Educo")
+@TeleOp(group = "AATeleOp", name = "TeleOp Educo")
 public class TeleOp_Educo extends LinearOpMode {
     static List<Action> ftc = new ArrayList<>();
     MecanumDrive drive;
@@ -87,6 +87,8 @@ public class TeleOp_Educo extends LinearOpMode {
             P2.copy(C2);
             C2.copy(gamepad2);
 
+            new InitSeq(arm,hanger,slider);
+
             if(C1.left_bumper){
                 slider.setExt(robot.extLeft.getCurrentPosition() - 25);
             }
@@ -113,8 +115,7 @@ public class TeleOp_Educo extends LinearOpMode {
             telemetry.update();
         }
 
-        robot.reset_encoders();
-        new InitSeq(arm,hanger,slider);
+//        robot.reset_encoders();
         waitForStart();
         while(opModeIsActive()){
             P1.copy(C1);
@@ -194,12 +195,13 @@ public class TeleOp_Educo extends LinearOpMode {
             }
 
             if(C2.left_bumper && !P2.left_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
-                slider_pos+=600;
-                slider_pos = Math.min(slider_pos,1200);
+                slider_pos+=400;
+                slider_pos = Math.min(slider_pos,800);
                 slider.setExt(slider_pos);
             }
+
             if(C2.right_bumper && !P2.right_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
-                slider_pos-=600;
+                slider_pos-=400;
                 slider_pos = Math.max(slider_pos,0);
                 slider.setExt(slider_pos);
             }
