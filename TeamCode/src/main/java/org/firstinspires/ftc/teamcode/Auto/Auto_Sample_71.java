@@ -66,7 +66,8 @@ public class Auto_Sample_71 extends LinearOpMode {
                 .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,MotorConst.extSpecimenPrePick))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait3)
-                .strafeToLinearHeading(sample1pick,Math.PI/2 - Math.toRadians(15))
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(sample1pick,Math.PI/2 - Math.toRadians(15)),Math.PI)
                 .stopAndAdd(FinalAutoSeq.SamplePick(arm))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait4)
