@@ -37,11 +37,11 @@ public class Auto_Sample_71 extends LinearOpMode {
     public static double wait6 = 0.3;
 
     public static Vector2d sample1pick = new Vector2d(-49,-44);
-    public static Vector2d sample1drop = new Vector2d(-57,-56);
+    public static Vector2d sample1drop = new Vector2d(-53,-53);
     public static Vector2d sample2pick = new Vector2d(-59,-44);
-    public static Vector2d sample2drop = new Vector2d(-57,-56);
+    public static Vector2d sample2drop = new Vector2d(-53,-53);
     public static Vector2d sample3pick = new Vector2d(-66,-42);
-    public static Vector2d sample3drop = new Vector2d(-57,-56);
+    public static Vector2d sample3drop = new Vector2d(-53,-53);
     public static Vector2d park = new Vector2d(-30,0);
 
 
@@ -66,45 +66,45 @@ public class Auto_Sample_71 extends LinearOpMode {
                 .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,MotorConst.extSpecimenPrePick))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait3)
-                .strafeToLinearHeading(sample1pick,Math.PI/2 + Math.toRadians(4))
+                .strafeToLinearHeading(sample1pick,Math.PI/2 - Math.toRadians(15))
                 .stopAndAdd(FinalAutoSeq.SamplePick(arm))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait4)
-                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawLeft(arm,slider,MotorConst.extMin,MotorConst.turretDown))
+                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extMin,MotorConst.turretDown))
                 .strafeToConstantHeading(sample1drop)
                 //TODO WAIT ADJUST
                 .waitSeconds(wait5)
-                .stopAndAdd(FinalAutoSeq.SampleSideDrop(arm))
+                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait2)
                 .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,MotorConst.extHighBucketDrop))
 //                //TODO WAIT ADJUST
                 .waitSeconds(wait3)
-                .strafeToLinearHeading(sample2pick,Math.PI/2 + Math.toRadians(4))
+                .strafeToLinearHeading(sample2pick,Math.PI/2 - Math.toRadians(15))
 ////                //////////////////////// SECOND ELEMENT /////////////////////
                 .stopAndAdd(FinalAutoSeq.SamplePick(arm))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait4)
-                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawLeft(arm,slider,MotorConst.extMin,MotorConst.turretDown))
+                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extMin,MotorConst.turretDown))
                 .strafeToConstantHeading(sample2drop)
                 //TODO WAIT ADJUST
                 .waitSeconds(wait5)
-                .stopAndAdd(FinalAutoSeq.SampleSideDrop(arm))
+                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait6)
                 .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtLeftYaw(arm,slider,MotorConst.extHighBucketDrop))
 //                //TODO WAIT ADJUST
                 .waitSeconds(wait3)
-                .strafeToLinearHeading(sample3pick,Math.PI/2 + Math.toRadians(3))
+                .strafeToLinearHeading(sample3pick,Math.PI/2 - Math.toRadians(15))
 ////                //////////////////////// THIRD ELEMENT //////////////////////
                 .stopAndAdd(FinalAutoSeq.SamplePick(arm))
 //                //TODO WAIT ADJUST
                 .waitSeconds(wait4)
-                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawLeft(arm,slider,MotorConst.extMin,MotorConst.turretDown))
+                .afterTime(0.01,FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extMin,MotorConst.turretDown))
                 .strafeToConstantHeading(sample3drop)
 //                //TODO WAIT ADJUST
                 .waitSeconds(wait5)
-                .stopAndAdd(FinalAutoSeq.SampleSideDrop(arm))
+                .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
 //                //TODO WAIT ADJUST
                 .waitSeconds(wait6)
                 .afterTime(0.01,FinalAutoSeq.TeleOpInit(arm,slider,MotorConst.extHighBucketDrop))

@@ -6,8 +6,7 @@ import com.acmerobotics.dashboard.config.Config;
 public class ServoConst {
     public static double gripperInit = 0.35;
     public static double gripperOpen = 0.35;
-    public static double gripperClose = 0.65
-            ;
+    public static double gripperClose = 0.65;
 
     public static double wristInit = 0.78;
     public static double wrist0 = 0.78;
@@ -41,7 +40,7 @@ public class ServoConst {
     public static double shoulderHome = 1;//0.3;
     public static double shoulderPreIntake = 0.89;//0.35;
     public static double shoulderAutoPreIntake = 1;//0.35;
-    public static double shoulderIntake = 0.825;//0.45;
+    public static double shoulderIntake = 0.83;//0.45;
     public static double shoulderPostIntake = 0.95;//0.3;
     public static double shoulderPreBucketDrop = 0.75;//0.45;
     public static double shoulderBucketDrop = 0.85;//0.45;
