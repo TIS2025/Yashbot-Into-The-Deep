@@ -74,7 +74,7 @@ public class FinalSeq {
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.BUCKET_DROP)),
                 new SleepAction(0.2),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
-                new InstantAction(()-> arm.updateWristState(Arm.WristState.WRIST0)),
+                new InstantAction(()-> arm.updateWristState(Arm.WristState.WRIST90)),
                 new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP))
         );
     }

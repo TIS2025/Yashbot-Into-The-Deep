@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Globals.ServoConst;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Sequences.FinalSeq;
@@ -195,20 +196,21 @@ public class TeleOp_Educo extends LinearOpMode {
             }
 
             if(C2.left_bumper && !P2.left_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
-                slider_pos+=400;
-                slider_pos = Math.min(slider_pos,800);
+                slider_pos+=500;
+                slider_pos = Math.min(slider_pos,1000);
                 slider.setExt(slider_pos);
             }
 
             if(C2.right_bumper && !P2.right_bumper && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
-                slider_pos-=400;
+                slider_pos-=500;
                 slider_pos = Math.max(slider_pos,0);
                 slider.setExt(slider_pos);
             }
 
             if(C2.a && !P2.a && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
                 wrist_rotate = !wrist_rotate;
-                arm.updateWristState(wrist_rotate? Arm.WristState.WRIST0: Arm.WristState.WRIST90);
+//                arm.updateWristState(wrist_rotate? Arm.WristState.WRIST0: Arm.WristState.WRIST90);
+                robot.wrist.setPosition(wrist_rotate? ServoConst.wrist0 : ServoConst.wrist90);
             }
 
             if(C1.left_trigger>0.75 && !(P1.left_trigger>0.75) && HANGER_FLAG1) hanger.setHanger(1100);
@@ -223,6 +225,7 @@ public class TeleOp_Educo extends LinearOpMode {
             telemetry.addData("Hanger Pos",robot.hanger.getCurrentPosition());
             telemetry.addData("Drive State",driveState);
             telemetry.addData("Bot State",intakeState);
+            telemetry.addData("Wrist state",wrist_rotate);
             telemetry.addData("Gripper State",arm.gripperState);
             telemetry.addData("Drive Current FL",drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));
             telemetry.addData("Drive Current FR",drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));
