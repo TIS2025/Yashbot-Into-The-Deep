@@ -19,11 +19,11 @@ public class LinearPathTest extends LinearOpMode {
         Action t1 = drive.actionBuilder(new Pose2d(new Vector2d(0,0),0))
                 .lineToX(40)
                 .waitSeconds(0.5)
-                .lineToX(0)
-                .waitSeconds(0.5)
-                .lineToX(40)
-                .waitSeconds(0.5)
-                .lineToX(0)
+//                .lineToX(0)
+//                .waitSeconds(0.5)
+//                .lineToX(40)
+//                .waitSeconds(0.5)
+//                .lineToX(0)
                 .build();
 
         waitForStart();

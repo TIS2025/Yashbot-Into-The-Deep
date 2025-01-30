@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @TeleOp(name = "IMU Test")
-@Disabled
+//@Disabled
 public class IMUTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

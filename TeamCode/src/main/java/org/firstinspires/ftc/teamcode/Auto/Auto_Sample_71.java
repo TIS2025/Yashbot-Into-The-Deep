@@ -36,12 +36,12 @@ public class Auto_Sample_71 extends LinearOpMode {
     public static double wait5 = 1.2;
     public static double wait6 = 0.3;
 
-    public static Vector2d sample1pick = new Vector2d(-49,-44);
-    public static Vector2d sample1drop = new Vector2d(-53,-53);
-    public static Vector2d sample2pick = new Vector2d(-59,-44);
-    public static Vector2d sample2drop = new Vector2d(-53,-53);
-    public static Vector2d sample3pick = new Vector2d(-66,-42);
-    public static Vector2d sample3drop = new Vector2d(-53,-53);
+    public static Vector2d sample1pick = new Vector2d(-49,-45);
+    public static Vector2d sample1drop = new Vector2d(-60,-54);
+    public static Vector2d sample2pick = new Vector2d(-59,-45);
+    public static Vector2d sample2drop = new Vector2d(-60,-54);
+    public static Vector2d sample3pick = new Vector2d(-66,-41);
+    public static Vector2d sample3drop = new Vector2d(-58,-54);
     public static Vector2d park = new Vector2d(-30,0);
 
 
@@ -66,13 +66,12 @@ public class Auto_Sample_71 extends LinearOpMode {
                 .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,MotorConst.extSpecimenPrePick))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait3)
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(sample1pick,Math.PI/2 - Math.toRadians(15)),Math.PI)
+                .splineToLinearHeading(new Pose2d(sample1pick,Math.PI/2 + Math.toRadians(5)),Math.PI)
                 .stopAndAdd(FinalAutoSeq.SamplePick(arm))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait4)
                 .afterTime(0.01,FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extMin,MotorConst.turretDown))
-                .strafeToConstantHeading(sample1drop)
+                .strafeToLinearHeading(sample1drop,Math.PI/2 - Math.toRadians(15))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait5)
                 .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
@@ -81,13 +80,13 @@ public class Auto_Sample_71 extends LinearOpMode {
                 .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtNoYaw(arm,slider,MotorConst.extHighBucketDrop))
 //                //TODO WAIT ADJUST
                 .waitSeconds(wait3)
-                .strafeToLinearHeading(sample2pick,Math.PI/2 - Math.toRadians(15))
+                .strafeToLinearHeading(sample2pick,Math.PI/2 + Math.toRadians(5))
 ////                //////////////////////// SECOND ELEMENT /////////////////////
                 .stopAndAdd(FinalAutoSeq.SamplePick(arm))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait4)
                 .afterTime(0.01,FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extMin,MotorConst.turretDown))
-                .strafeToConstantHeading(sample2drop)
+                .strafeToLinearHeading(sample2drop,Math.PI/2 - Math.toRadians(15))
                 //TODO WAIT ADJUST
                 .waitSeconds(wait5)
                 .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
@@ -96,13 +95,13 @@ public class Auto_Sample_71 extends LinearOpMode {
                 .afterTime(0.01,FinalAutoSeq.SamplePickPosNoExtLeftYaw(arm,slider,MotorConst.extHighBucketDrop))
 //                //TODO WAIT ADJUST
                 .waitSeconds(wait3)
-                .strafeToLinearHeading(sample3pick,Math.PI/2 - Math.toRadians(15))
+                .strafeToLinearHeading(sample3pick,Math.PI/2 + Math.toRadians(5))
 ////                //////////////////////// THIRD ELEMENT //////////////////////
                 .stopAndAdd(FinalAutoSeq.SamplePick(arm))
 //                //TODO WAIT ADJUST
                 .waitSeconds(wait4)
                 .afterTime(0.01,FinalAutoSeq.SampleDropPosYawNeutral(arm,slider,MotorConst.extMin,MotorConst.turretDown))
-                .strafeToConstantHeading(sample3drop)
+                .strafeToLinearHeading(sample3drop,Math.PI/2  - Math.toRadians(15))
 //                //TODO WAIT ADJUST
                 .waitSeconds(wait5)
                 .stopAndAdd(FinalAutoSeq.SampleDrop(arm))
