@@ -54,8 +54,8 @@ public class GetValues extends LinearOpMode {
             if(C.x && !P.x) yawPos+=0.005;
             if(C.b && !P.b) yawPos-=0.005;
 
-            if(C.dpad_up && !P.dpad_up) elbowPos+=0.005;
-            if(C.dpad_down && !P.dpad_down) elbowPos-=0.005;
+            if(C.dpad_up && !P.dpad_up) elbowPos+=0.025;
+            if(C.dpad_down && !P.dpad_down) elbowPos-=0.025;
 
             if(C.dpad_left && !P.dpad_left) wristPos+=0.01;
             if(C.dpad_right && !P.dpad_right) wristPos-=0.01;

@@ -24,7 +24,7 @@ import java.util.Arrays;
 
 @Config
 @Autonomous(group = "Auto", name = "Auto Sample 1 + 4")
-public class Auto_Sample_84 extends LinearOpMode {
+public class Auto_Sample_87 extends LinearOpMode {
 
     MecanumDrive drive;
 
