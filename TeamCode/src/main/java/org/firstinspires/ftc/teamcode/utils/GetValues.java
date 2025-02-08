@@ -48,8 +48,8 @@ public class GetValues extends LinearOpMode {
             P2.copy(C2);
             C2.copy(gamepad2);
 
-            if(C.a && !P.a) shoulderPos+=0.005;
-            if(C.y && !P.y) shoulderPos-=0.005;
+            if(C.a && !P.a) shoulderPos+=0.01;
+            if(C.y && !P.y) shoulderPos-=0.01;
 
             if(C.x && !P.x) yawPos+=0.005;
             if(C.b && !P.b) yawPos-=0.005;

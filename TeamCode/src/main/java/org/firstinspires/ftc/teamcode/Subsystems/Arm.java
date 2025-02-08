@@ -34,6 +34,7 @@ public class Arm {
         POST_INTAKE,
         PRE_BUCKET_DROP,
         BUCKET_DROP,
+        POST_BUCKET_DROP,
         AUTO_INIT,
         SPECIMEN_PRE_PICK,
         SPECIMEN_PICK,
@@ -156,6 +157,9 @@ public class Arm {
                 break;
             case BUCKET_DROP:
                 setElbow(ServoConst.elbowBucketDrop);
+                break;
+            case POST_BUCKET_DROP:
+                setElbow(ServoConst.elbowPostBucketDrop);
                 break;
             case AUTO_INIT:
                 setElbow(ServoConst.elbowAutoInit);

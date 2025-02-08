@@ -232,6 +232,10 @@ public class TeleOp_Educo extends LinearOpMode {
             telemetry.addData("Drive Current FR",drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));
             telemetry.addData("Drive Current BL",drive.leftBack.getCurrent(CurrentUnit.MILLIAMPS));
             telemetry.addData("Drive Current BR",drive.rightBack.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Lifter Current L",robot.extLeft.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Lifter Current R",robot.extRight.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Turret Current",robot.turret.getCurrent(CurrentUnit.MILLIAMPS));
+
             telemetry.update();
         }
     }

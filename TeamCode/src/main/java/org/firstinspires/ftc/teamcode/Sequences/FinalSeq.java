@@ -27,13 +27,12 @@ public class FinalSeq {
         return new SequentialAction(
                 new InstantAction(() -> slider.updateExtState(Slider.ExtState.MIN)),
                 new InstantAction(() -> arm.updateShoulderState(Arm.ShoulderState.HOME)),
-//                new SleepAction(0.3),
-                new InstantAction(() -> arm.updateYawState(Arm.YawState.HOME)),
                 new InstantAction(() -> arm.updateElbowState(Arm.ElbowState.HOME)),
+                new SleepAction(extTime+0.2),
+                new InstantAction(() -> slider.updateTurretState(Slider.TurretState.DOWN)),
+                new InstantAction(() -> arm.updateYawState(Arm.YawState.HOME)),
                 new InstantAction(() -> arm.updateWristState(Arm.WristState.WRIST0)),
-                new InstantAction(() -> arm.updateGripperState(Arm.GripperState.CLOSE)),
-                new SleepAction(extTime),
-                new InstantAction(() -> slider.updateTurretState(Slider.TurretState.DOWN))
+                new InstantAction(() -> arm.updateGripperState(Arm.GripperState.CLOSE))
         );
     }
 
@@ -72,10 +71,11 @@ public class FinalSeq {
                 new InstantAction(()-> slider.updateTurretState(Slider.TurretState.UP)),
                 new SleepAction(turTime),
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.BUCKET_DROP)),
-                new SleepAction(0.2),
-                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
                 new InstantAction(()-> arm.updateWristState(Arm.WristState.WRIST90)),
-                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP))
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.PRE_BUCKET_DROP)),
+                new SleepAction(extTime),
+                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP))
+
         );
     }
 
@@ -89,15 +89,16 @@ public class FinalSeq {
                 new SleepAction(0.3),
                 new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
                 new SleepAction(0.3),
-                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.PRE_BUCKET_DROP)),
+                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.POST_BUCKET_DROP)),
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
                 new SleepAction(extTime),
+                new InstantAction(() -> slider.updateTurretState(Slider.TurretState.DOWN)),
+                new SleepAction(0.2),
                 new InstantAction(() -> arm.updateShoulderState(Arm.ShoulderState.HOME)),
                 new InstantAction(() -> arm.updateYawState(Arm.YawState.HOME)),
                 new InstantAction(() -> arm.updateElbowState(Arm.ElbowState.HOME)),
                 new InstantAction(() -> arm.updateWristState(Arm.WristState.WRIST0)),
-                new InstantAction(() -> arm.updateGripperState(Arm.GripperState.CLOSE)),
-                new InstantAction(() -> slider.updateTurretState(Slider.TurretState.DOWN))
+                new InstantAction(() -> arm.updateGripperState(Arm.GripperState.CLOSE))
         );
     }
 
@@ -122,13 +123,13 @@ public class FinalSeq {
 
         return new SequentialAction(
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.SPECIMEN_PRE_PICK)),
-                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_PICK)),
                 new InstantAction(()-> arm.updateWristState(Arm.WristState.SPECIMEN_PRE_PICK)),
                 new InstantAction(()-> arm.updateYawState(Arm.YawState.SPECIMEN_PRE_PICK)),
                 new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
-                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PRE_PICK)),
                 new SleepAction(extTime + 0.1),
-                new InstantAction(()-> slider.updateTurretState(Slider.TurretState.SPECIMEN_PRE_PICK))
+                new InstantAction(()-> slider.updateTurretState(Slider.TurretState.SPECIMEN_PRE_PICK)),
+                new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PRE_PICK)),
+                new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_PICK))
         );
     }
 

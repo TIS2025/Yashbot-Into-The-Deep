@@ -7,7 +7,7 @@ public class MotorConst {
 
     public static int extInit = 0;
     public static int extMin = 0;
-    public static int extMax = 2750;
+    public static int extMax = 2900;
     public static int extHorizontalMax = 1200;
     public static int extHighBucketDrop = 2750;
     public static int extSpecimenPrePick = 0;
@@ -18,8 +18,7 @@ public class MotorConst {
 
     public static int turretInit = 0;
     public static int turretUp = 0;
-    public static int turretDown = 1300;
-    public static int turretAutoDown = 1250;
+    public static int turretDown = 1250;
     public static int turretBucketPreDrop = 0;
     public static int turretSpecimenPrePick = 300;
     public static int turretSpecimenPreDrop = 0;

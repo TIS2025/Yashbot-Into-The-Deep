@@ -33,6 +33,7 @@ public class RobotHardware {
         //SLIDER init
         this.extRight = hardwareMap.get(DcMotorEx.class,"extensionRight");
         this.extRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.extRight.setDirection(DcMotorSimple.Direction.REVERSE);
         this.extLeft = hardwareMap.get(DcMotorEx.class,"extensionLeft");
         this.extLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.turret = hardwareMap.get(DcMotorEx.class,"turret");
