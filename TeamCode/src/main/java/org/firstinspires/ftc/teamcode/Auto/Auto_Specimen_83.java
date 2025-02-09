@@ -24,9 +24,23 @@ public class Auto_Specimen_83 extends LinearOpMode {
 
     VelConstraint baseConst = new MinVelConstraint(Arrays.asList(new TranslationalVelConstraint(80)));
 
+    public static Pose2d start_pose = new Pose2d(new  Vector2d(17,-64),-Math.PI/2);
+    public static Vector2d preload_drop = new Vector2d(2,-31);
+    public static Vector2d sample1pick = new Vector2d(27.5,-31);
+    public static Vector2d sample1drop = new Vector2d(32,-45);
+    public static Vector2d sample2pick = new Vector2d(38.5,-30);
+    public static Vector2d sample2drop = new Vector2d(38,-45);
+    public static Vector2d sample3pick = new Vector2d(48.5,-30);
+    public static Vector2d sample3drop = new Vector2d(42,-45);
+    public static Vector2d specimen_pick = new Vector2d(36,-64);
+    public static Vector2d specimen1drop = new Vector2d(4,-30);
+    public static Vector2d specimen2drop = new Vector2d(6,-30);
+    public static Vector2d specimen3drop = new Vector2d(8,-30);
+    public static Vector2d park = new Vector2d(45,-60);
+
     @Override
     public void runOpMode() throws InterruptedException {
-        MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(new Vector2d(17,-64),-Math.PI/2));
+        MecanumDrive drive = new MecanumDrive(hardwareMap,start_pose);
         RobotHardware robot = new RobotHardware(hardwareMap);
         robot.init_encoders();
         Slider slider = new Slider(robot);
@@ -35,57 +49,57 @@ public class Auto_Specimen_83 extends LinearOpMode {
         robot.reset_encoders();
 
 
-        Action autoSequence = drive.actionBuilder(new Pose2d(new Vector2d(17,-64),-Math.PI/2))
+        Action autoSequence = drive.actionBuilder(start_pose)
                 //PRELOAD SPECIMEN DROP
                 .afterTime(0.01,AutoSeq.SpecimenDropPos(arm,slider))
-                .strafeToConstantHeading(new Vector2d(2,-31))
+                .strafeToConstantHeading(preload_drop)
                 .stopAndAdd(AutoSeq.SpecimenDrop(arm,slider))
                 //SAMPLE 1 TO OBS
                 .afterTime(0.01,AutoSeq.SamplePickPosFromSpecimen(arm,slider))
                 .afterTime(1.7,AutoSeq.SamplePickForSpecimen(arm,slider))
-                .splineToLinearHeading(new Pose2d(new Vector2d(27.5,-31),Math.PI/12),Math.PI/4)
+                .splineToLinearHeading(new Pose2d(sample1pick,Math.PI/12),Math.PI/4)
                 .waitSeconds(0.25)
                 .afterTime(0.7,AutoSeq.SampleDropObsZone(arm,slider))
-                .strafeToLinearHeading(new Vector2d(32,-45), -Math.PI/4)
+                .strafeToLinearHeading(sample1drop, -Math.PI/4)
                 //SAMPLE 2 TO OBS
                 .afterTime(0.01,AutoSeq.SamplePickPosFromObs(arm,slider))
                 .afterTime(0.85,AutoSeq.SamplePickForSpecimen(arm,slider))
-                .strafeToLinearHeading(new Vector2d(38.5,-30),Math.PI/12)
+                .strafeToLinearHeading(sample2pick,Math.PI/12)
                 .waitSeconds(0.25)
                 .afterTime(0.75,AutoSeq.SampleDropObsZone(arm,slider))
-                .strafeToLinearHeading(new Vector2d(38,-45), -Math.PI/4)
+                .strafeToLinearHeading(sample2drop, -Math.PI/4)
                 //SAMPLE 3 TO OBS
                 .afterTime(0.01,AutoSeq.SamplePickPosFromObs(arm,slider))
                 .afterTime(0.85,AutoSeq.SamplePickForSpecimen(arm,slider))
-                .strafeToLinearHeading(new Vector2d(48.5,-30),Math.PI/12)
+                .strafeToLinearHeading(sample3pick,Math.PI/12)
                 .waitSeconds(0.25)
                 .afterTime(0.65,AutoSeq.SampleDropObsZone(arm,slider))
-                .strafeToLinearHeading(new Vector2d(42,-45), -Math.PI/4)
+                .strafeToLinearHeading(sample3drop, -Math.PI/4)
 //                FIRST SPECIMEN DROP
                 .afterTime(0.01,AutoSeq.SpecimenPickPosFromSampleDrop(arm,slider))
                 .waitSeconds(0.45)
-                .splineToLinearHeading(new Pose2d(new Vector2d(35.5,-63),-Math.PI/2),3*Math.PI/2)
+                .splineToLinearHeading(new Pose2d(specimen_pick,-Math.PI/2),3*Math.PI/2)
                 .stopAndAdd(AutoSeq.SpecimenPick(arm,slider))
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(4,-30),Math.PI/2)
+                .splineToConstantHeading(specimen1drop,Math.PI/2)
                 .stopAndAdd(AutoSeq.SpecimenDrop(arm,slider))
                 //SECOND SPECIMEN DROP
                 .afterTime(0.01,AutoSeq.SpecimenPickPos(arm,slider))
-                .splineToConstantHeading(new Vector2d(36,-64),-Math.PI/2)
+                .splineToConstantHeading(specimen_pick,-Math.PI/2)
                 .stopAndAdd(AutoSeq.SpecimenPick(arm,slider))
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(6,-30),Math.PI/2)
+                .splineToConstantHeading(specimen2drop,Math.PI/2)
                 .stopAndAdd(AutoSeq.SpecimenDrop(arm,slider))
                 //THIRD SPECIMEN DROP
                 .afterTime(0.01,AutoSeq.SpecimenPickPos(arm,slider))
-                .splineToConstantHeading(new Vector2d(36,-64),-Math.PI/2)
+                .splineToConstantHeading(specimen_pick,-Math.PI/2)
                 .stopAndAdd(AutoSeq.SpecimenPick(arm,slider))
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(8,-30),Math.PI/2)
+                .splineToConstantHeading(specimen3drop,Math.PI/2)
                 .stopAndAdd(AutoSeq.SpecimenDrop(arm,slider))
                 //PARKING
                 .afterTime(0.01,AutoSeq.TeleOpInit(arm,slider))
-                .strafeToConstantHeading(new Vector2d(45,-60),baseConst)
+                .strafeToConstantHeading(park,baseConst)
                 .build();
 
         if(opModeInInit()) {
