@@ -28,14 +28,14 @@ public class Auto_Specimen_83 extends LinearOpMode {
     public static Vector2d preload_drop = new Vector2d(2,-31);
     public static Vector2d sample1pick = new Vector2d(27.5,-31);
     public static Vector2d sample1drop = new Vector2d(32,-45);
-    public static Vector2d sample2pick = new Vector2d(38.5,-30);
+    public static Vector2d sample2pick = new Vector2d(38.5,-29);
     public static Vector2d sample2drop = new Vector2d(38,-45);
     public static Vector2d sample3pick = new Vector2d(48.5,-30);
     public static Vector2d sample3drop = new Vector2d(42,-45);
     public static Vector2d specimen_pick = new Vector2d(36,-64);
-    public static Vector2d specimen1drop = new Vector2d(4,-30);
-    public static Vector2d specimen2drop = new Vector2d(6,-30);
-    public static Vector2d specimen3drop = new Vector2d(8,-30);
+    public static Vector2d specimen1drop = new Vector2d(5,-30);
+    public static Vector2d specimen2drop = new Vector2d(8,-30);
+    public static Vector2d specimen3drop = new Vector2d(11,-30);
     public static Vector2d park = new Vector2d(45,-60);
 
     @Override
@@ -70,7 +70,7 @@ public class Auto_Specimen_83 extends LinearOpMode {
                 .strafeToLinearHeading(sample2drop, -Math.PI/4)
                 //SAMPLE 3 TO OBS
                 .afterTime(0.01,AutoSeq.SamplePickPosFromObs(arm,slider))
-                .afterTime(0.85,AutoSeq.SamplePickForSpecimen(arm,slider))
+                .afterTime(0.95,AutoSeq.SamplePickForSpecimen(arm,slider))
                 .strafeToLinearHeading(sample3pick,Math.PI/12)
                 .waitSeconds(0.25)
                 .afterTime(0.65,AutoSeq.SampleDropObsZone(arm,slider))
