@@ -91,7 +91,7 @@ public class FinalSeq {
                 new SleepAction(0.3),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.POST_BUCKET_DROP)),
                 new InstantAction(()-> slider.updateExtState(Slider.ExtState.MIN)),
-                new SleepAction(extTime),
+                new SleepAction(1.3),
                 new InstantAction(() -> slider.updateTurretState(Slider.TurretState.DOWN)),
                 new SleepAction(0.2),
                 new InstantAction(() -> arm.updateShoulderState(Arm.ShoulderState.HOME)),
@@ -128,6 +128,7 @@ public class FinalSeq {
                 new InstantAction(()-> arm.updateGripperState(Arm.GripperState.OPEN)),
                 new SleepAction(extTime + 0.1),
                 new InstantAction(()-> slider.updateTurretState(Slider.TurretState.SPECIMEN_PRE_PICK)),
+                new SleepAction(0.4),
                 new InstantAction(()-> arm.updateShoulderState(Arm.ShoulderState.SPECIMEN_PRE_PICK)),
                 new InstantAction(()-> arm.updateElbowState(Arm.ElbowState.SPECIMEN_PRE_PICK))
         );

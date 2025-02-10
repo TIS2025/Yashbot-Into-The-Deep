@@ -208,7 +208,7 @@ public class TeleOp_Educo extends LinearOpMode {
                 slider.setExt(slider_pos);
             }
 
-            if(C2.a && !P2.a && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
+            if(C1.y && !P1.y && intakeState == BotState.SAMPLE_MODE && sampleState == SampleState.PICK_POS){
                 wrist_rotate = !wrist_rotate;
 //                arm.updateWristState(wrist_rotate? Arm.WristState.WRIST0: Arm.WristState.WRIST90);
                 robot.wrist.setPosition(wrist_rotate? ServoConst.wrist0 : ServoConst.wrist90);
@@ -220,21 +220,21 @@ public class TeleOp_Educo extends LinearOpMode {
             if(C1.left_trigger>0.75 && !(P1.left_trigger>0.75) && HANGER_FLAG2) ftc.add(FinalSeq.HighHang1(arm, slider, hanger));
             if(C1.right_trigger>0.75 && !(P1.right_trigger>0.75) && HANGER_FLAG2) ftc.add(FinalSeq.HighHang2(slider,hanger));
 
-            telemetry.addData("Turret Pos",robot.turret.getCurrentPosition());
-            telemetry.addData("Ext left Pos",robot.extLeft.getCurrentPosition());
-            telemetry.addData("Ext right Pos",robot.extRight.getCurrentPosition());
-            telemetry.addData("Hanger Pos",robot.hanger.getCurrentPosition());
-            telemetry.addData("Drive State",driveState);
-            telemetry.addData("Bot State",intakeState);
-            telemetry.addData("Wrist state",wrist_rotate);
+//            telemetry.addData("Turret Pos",robot.turret.getCurrentPosition());
+//            telemetry.addData("Ext left Pos",robot.extLeft.getCurrentPosition());
+//            telemetry.addData("Ext right Pos",robot.extRight.getCurrentPosition());
+//            telemetry.addData("Hanger Pos",robot.hanger.getCurrentPosition());
+//            telemetry.addData("Drive State",driveState);
+//            telemetry.addData("Bot State",intakeState);
+//            telemetry.addData("Wrist state",wrist_rotate);
             telemetry.addData("Gripper State",arm.gripperState);
-            telemetry.addData("Drive Current FL",drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Drive Current FR",drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Drive Current BL",drive.leftBack.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Drive Current BR",drive.rightBack.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Lifter Current L",robot.extLeft.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Lifter Current R",robot.extRight.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Turret Current",robot.turret.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Drive Current FL",drive.leftFront.getCurrent(CurrentUnit.AMPS));
+            telemetry.addData("Drive Current FR",drive.rightFront.getCurrent(CurrentUnit.AMPS));
+            telemetry.addData("Drive Current BL",drive.leftBack.getCurrent(CurrentUnit.AMPS));
+            telemetry.addData("Drive Current BR",drive.rightBack.getCurrent(CurrentUnit.AMPS));
+            telemetry.addData("Lifter Current L",robot.extLeft.getCurrent(CurrentUnit.AMPS));
+            telemetry.addData("Lifter Current R",robot.extRight.getCurrent(CurrentUnit.AMPS));
+            telemetry.addData("Turret Current",robot.turret.getCurrent(CurrentUnit.AMPS));
 
             telemetry.update();
         }
